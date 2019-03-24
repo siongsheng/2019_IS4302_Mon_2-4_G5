@@ -5,10 +5,12 @@ import Dashboard from '@/components/Dashboard'
 import NewUser from '@/components/NewUser'
 import ViewUser from '@/components/ViewUser'
 import EditUser from '@/components/EditUser'
+import Login from '@/components/Login'
+import firebase from 'firebase'
 
 Vue.use(Router)
 
-export default new Router({
+let router = new Router({
   routes: [
     {
       path: '/hello',
@@ -18,22 +20,73 @@ export default new Router({
     {
       path: '/',
       name: 'dashboard',
-      component: Dashboard
+      component: Dashboard,
+      meta:{
+        requiresAuth: true
+      }
+    },
+    {
+      path:'/login',
+      name: 'login',
+      component:Login,
+      meta:{
+        requiresGuest: true
+      }
     },
     {
       path: '/new',
       name: 'new-user',
-      component: NewUser
+      component: NewUser,
+      meta:{
+        requiresAuth: true
+      }
     },
     {
       path: '/:user_id',
       name: 'view-user',
-      component: ViewUser
+      component: ViewUser,
+      meta:{
+        requiresAuth: true
+      }
     },
     {
       path: '/edit/:user_id',
       name: 'edit-user',
-      component: EditUser
+      component: EditUser,
+      meta:{
+        requiresAuth: true
+      }
     }
   ]
 })
+
+router.beforeEach((to, from, next) =>{
+
+  if(to.matched.some(record => record.meta.requiresAuth)){
+    if(!firebase.auth().currentUser){
+      next({
+        path:'/login',
+        query:{
+          redirect: to.fullPath
+        }
+      });
+    } else{
+      next();
+    }
+  } else if(to.matched.some(record => record.meta.requiresGuest)){
+    if(firebase.auth().currentUser){
+      next({
+        path:'/',
+        query:{
+          redirect: to.fullPath
+        }
+      });
+    } else{
+      next();
+    }
+  } else{
+    next();
+  }
+});
+
+export default router;
