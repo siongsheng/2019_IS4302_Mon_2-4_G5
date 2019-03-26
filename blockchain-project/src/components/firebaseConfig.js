@@ -1,10 +1,8 @@
 export default {
-
-  apiKey: "AIzaSyAvU-1ARnvEdAYMNg5CwcMN3_LLd-_Ch8g",
-  authDomain: "vuefs-dev-838e0.firebaseapp.com",
-  databaseURL: "https://vuefs-dev-838e0.firebaseio.com",
-  projectId: "vuefs-dev-838e0",
-  storageBucket: "vuefs-dev-838e0.appspot.com",
-  messagingSenderId: "239008336398"
-  
+  apiKey: 'AIzaSyBa0fx4Rvdr3YdnvPKQriJ5c3XzaPUwmI4',
+  authDomain: 'is4302.firebaseapp.com',
+  databaseURL: 'https://is4302.firebaseio.com',
+  projectId: 'is4302',
+  storageBucket: 'is4302.appspot.com',
+  messagingSenderId: '332381728433'
 }
