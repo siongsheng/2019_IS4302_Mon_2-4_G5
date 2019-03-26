@@ -6,6 +6,8 @@ import NewUser from '@/components/NewUser'
 import ViewUser from '@/components/ViewUser'
 import EditUser from '@/components/EditUser'
 import Login from '@/components/Login'
+import BuyerDeliveryRequest from '@/components/BuyerDeliveryRequest'
+import BuyerAcceptBid from '@/components/BuyerAcceptBid'
 import firebase from 'firebase'
 
 Vue.use(Router)
@@ -21,6 +23,22 @@ let router = new Router({
       path: '/',
       name: 'dashboard',
       component: Dashboard,
+      meta:{
+        requiresAuth: true
+      }
+    },
+    {
+      path: '/buyerDeliveryRequest',
+      name: 'buyerDeliveryRequest',
+      component: BuyerDeliveryRequest,
+      meta:{
+        requiresAuth: true
+      }
+    },
+    {
+      path: '/buyerAcceptBid',
+      name: 'buyerAcceptBid',
+      component: BuyerAcceptBid,
       meta:{
         requiresAuth: true
       }

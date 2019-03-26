@@ -1,6 +1,6 @@
 <template>
   <nav>
-    <div class="nav-wrapper green">
+    <div class="nav-wrapper blue darken-4">
       <div class="container">
         <router-link to="/" class="brand-logo">DeliverLor</router-link>
         <img :src="image" style="width:3em; height:2em; margin-left:160px; margin-top:18px;">
