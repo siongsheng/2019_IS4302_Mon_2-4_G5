@@ -9,7 +9,7 @@
          Second Line
       </p>
       <!-- <a href="#!" class="secondary-content"><i class="material-icons">grade</i></a> -->
-      <a href="#/buyerAcceptBid" class="secondary-content">View</a>
+      <a href="#/buyerAcceptBid" class="secondary-content" onclick="">View</a>
     </li>
     <li class="collection-item avatar">
         <img src="../assets/shoe.jpg" alt="" class="circle">
@@ -18,7 +18,7 @@
          Second Line
       </p>
       <!-- <a href="#!" class="secondary-content"><i class="material-icons">grade</i></a> -->
-      <a href="#/buyerAcceptBid" class="secondary-content">View</a>
+      <a href="#/buyerAcceptBid" class="secondary-content" onclick="">View</a>
     </li>
     <li class="collection-item avatar">
         <img src="../assets/tshirt.jpg" alt="" class="circle">
@@ -27,7 +27,7 @@
          Second Line
       </p>
       <!-- <a href="#!" class="secondary-content"><i class="material-icons">grade</i></a> -->
-      <a href="#/buyerAcceptBid" class="secondary-content">View</a>
+      <a href="#/buyerAcceptBid" class="secondary-content" onclick="">View</a>
     </li>
 
       <!-- <li class="collection-header"><h4>Delivery Requests</h4></li>
@@ -41,35 +41,8 @@
           </router-link>
       </li> -->
     </ul>
-    <div class="fixed-action-btn">
-      <router-link to="/new" class="btn-floating btn-large red">
-        <i class="fa fa-plus"></i>
-      </router-link>
-    </div>
   </div>
 </template>
 <script>
-import db from './firebaseInit'
-export default {
-  name: 'buyerDeliveryRequest',
-  data () {
-    return {
-      users: []
-    }
-  },
-  created () {
-    db.collection('users').orderBy('email', 'desc').get().then((querySnapshot) => {
-      querySnapshot.forEach((doc) => {
-        // console.log(doc)
-        const data = {
-          'id': doc.data().user_id,
-          'name': doc.data().name,
-          'email': doc.data().email,
-          'contact_number': doc.data().contact_number
-        }
-        this.users.push(data)
-      })
-    })
-  }
-}
+
 </script>

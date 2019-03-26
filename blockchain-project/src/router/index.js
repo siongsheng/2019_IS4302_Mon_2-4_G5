@@ -8,6 +8,8 @@ import EditUser from '@/components/EditUser'
 import Login from '@/components/Login'
 import BuyerDeliveryRequest from '@/components/BuyerDeliveryRequest'
 import BuyerAcceptBid from '@/components/BuyerAcceptBid'
+import BuyerViewProduct from '@/components/BuyerViewProduct'
+import BuyerDeliveryStatus from '@/components/BuyerDeliveryStatus'
 import firebase from 'firebase'
 
 Vue.use(Router)
@@ -28,6 +30,14 @@ let router = new Router({
       }
     },
     {
+      path: '/buyerViewProduct',
+      name: 'buyerViewProduct',
+      component: BuyerViewProduct,
+      meta:{
+        requiresAuth: true
+      }
+    },
+    {
       path: '/buyerDeliveryRequest',
       name: 'buyerDeliveryRequest',
       component: BuyerDeliveryRequest,
@@ -43,6 +53,15 @@ let router = new Router({
         requiresAuth: true
       }
     },
+    {
+      path: '/buyerDeliveryStatus',
+      name: 'buyerDeliveryStatus',
+      component: BuyerDeliveryStatus,
+      meta:{
+        requiresAuth: true
+      }
+    },
+
     {
       path:'/login',
       name: 'login',
