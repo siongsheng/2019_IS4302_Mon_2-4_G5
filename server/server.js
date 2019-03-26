@@ -10,7 +10,7 @@ App.use(bodyParser.json());
 //App.use(Express.static('html'));
 
 //reverse proxy
-//App.use('/hlf', proxy('localhost:3001/'))
+App.use('/hlf', proxy('localhost:3001/'))
 
 let port = process.env.PORT || 3000;
 App.listen(port, () => console.log(`Server listening on port ${port}!`));
