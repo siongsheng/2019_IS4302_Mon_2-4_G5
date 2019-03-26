@@ -3,7 +3,7 @@
     <div class="container">
       <div class="row">
         <div class="col s12 m8 offset-m2">
-          <div class="login card-panel blue darken-4 white-text center">
+          <div class="login card-panel blue darken-1 white-text center">
             <h3>Login</h3>
             <form>
               <div class="input-field">
