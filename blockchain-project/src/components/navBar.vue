@@ -1,5 +1,5 @@
 <template>
-<nav>
+  <nav>
     <div class="nav-wrapper green">
       <div class="container">
         <router-link to="/" class="brand-logo">DeliverLor</router-link>
@@ -14,8 +14,9 @@
         </ul>
       </div>
     </div>
-</nav>
+  </nav>
 </template>
+
 <script>
   import firebase from 'firebase'
   export default{
