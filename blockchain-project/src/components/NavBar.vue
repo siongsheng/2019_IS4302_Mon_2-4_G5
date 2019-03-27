@@ -19,6 +19,7 @@
 
 <script>
   import firebase from 'firebase'
+  import db from './firebaseInit'
   export default{
     name: 'navbar',
     data(){
@@ -32,6 +33,14 @@
       if(firebase.auth().currentUser){
         this.isLoggedIn = true;
         this.currentUser = firebase.auth().currentUser.email;
+        console.log(this.currentUser);
+        var u = db.collection("users").where('email', '==', this.currentUser).limit(1).get().then((querySnapshot)=> {
+          querySnapshot.forEach((doc) => {
+            //console.log the current user's entire profile
+            console.log(doc)
+          }).then(()=>{
+          })
+        })
       }
     },
     methods:{
