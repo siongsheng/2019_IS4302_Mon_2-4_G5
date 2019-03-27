@@ -29,7 +29,7 @@
         </div>
         <button type="submit" class="btn">Submit</button>
         <router-link to="/" class="btn grey">Cancel</router-link>
-      </form>\
+      </form>
     </div>
   </div>
 </template>

@@ -8,6 +8,14 @@ import EditUser from '@/components/EditUser'
 import Login from '@/components/Login'
 import BuyerDeliveryRequest from '@/components/BuyerDeliveryRequest'
 import BuyerAcceptBid from '@/components/BuyerAcceptBid'
+import BuyerViewProduct from '@/components/BuyerViewProduct'
+import BuyerDeliveryStatus from '@/components/BuyerDeliveryStatus'
+import BuyerConfirmDelivery from '@/components/BuyerConfirmDelivery'
+import SellerDeliveryRequest from '@/components/SellerDeliveryRequest'
+import LogisticsDeliveryRequest from '@/components/LogisticsDeliveryRequest'
+import LogisticsPlaceBid from '@/components/LogisticsPlaceBid'
+import LogisticsDeliveryRequestStatus from '@/components/LogisticsDeliveryRequestStatus'
+import LogisticsProductHandover from '@/components/LogisticsProductHandover'
 import firebase from 'firebase'
 
 Vue.use(Router)
@@ -28,6 +36,14 @@ let router = new Router({
       }
     },
     {
+      path: '/buyerViewProduct',
+      name: 'buyerViewProduct',
+      component: BuyerViewProduct,
+      meta:{
+        requiresAuth: true
+      }
+    },
+    {
       path: '/buyerDeliveryRequest',
       name: 'buyerDeliveryRequest',
       component: BuyerDeliveryRequest,
@@ -43,6 +59,63 @@ let router = new Router({
         requiresAuth: true
       }
     },
+    {
+      path: '/buyerDeliveryStatus',
+      name: 'buyerDeliveryStatus',
+      component: BuyerDeliveryStatus,
+      meta:{
+        requiresAuth: true
+      }
+    },
+    {
+      path: '/buyerConfirmDelivery',
+      name: 'buyerConfirmDelivery',
+      component: BuyerConfirmDelivery,
+      meta:{
+        requiresAuth: true
+      }
+    },
+    {
+      path: '/sellerDeliveryRequest',
+      name: 'sellerDeliveryRequest',
+      component: SellerDeliveryRequest,
+      meta:{
+        requiresAuth: true
+      }
+    },
+    {
+      path: '/logisticsDeliveryRequest',
+      name: 'logisticsDeliveryRequest',
+      component: LogisticsDeliveryRequest,
+      meta:{
+        requiresAuth: true
+      }
+    },
+    {
+      path: '/logisticsPlaceBid',
+      name: 'logisticsPlaceBid',
+      component: LogisticsPlaceBid,
+      meta:{
+        requiresAuth: true
+      }
+    },
+    {
+      path: '/logisticsDeliveryRequestStatus',
+      name: 'logisticsDeliveryRequestStatus',
+      component: LogisticsDeliveryRequestStatus,
+      meta:{
+        requiresAuth: true
+      }
+    },
+    {
+      path: '/logisticsProductHandover',
+      name: 'logisticsProductHandover',
+      component: LogisticsProductHandover,
+      meta:{
+        requiresAuth: true
+      }
+    },
+
     {
       path:'/login',
       name: 'login',
