@@ -1,5 +1,6 @@
 const UsersController = require('./controllers/UsersController')
 const OrderController = require('./controllers/OrderController')
+const AuthController = require('./controllers/AuthController')
 
 module.exports = (App) => {
 	// App.post('/register',
@@ -12,4 +13,5 @@ module.exports = (App) => {
 	App.get('/product', OrderController.product)
 	App.get('/order', OrderController.order)
 	App.get('/logisticsrequest', OrderController.logisticsrequest)
+	App.get('/login', AuthController.login)
 }
