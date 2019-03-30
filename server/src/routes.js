@@ -2,16 +2,23 @@ const UsersController = require('./controllers/UsersController')
 const OrderController = require('./controllers/OrderController')
 const AuthController = require('./controllers/AuthController')
 
-module.exports = (App) => {
-	// App.post('/register',
-		// controller.register,
-		// controller.register)
-
-	App.get('/buyer', UsersController.buyer)
-	App.get('/seller', UsersController.seller)
-	App.get('/logistics', UsersController.logistics)
-	App.get('/product', OrderController.product)
-	App.get('/order', OrderController.order)
-	App.get('/logisticsrequest', OrderController.logisticsrequest)
-	App.get('/login', AuthController.login)
+module.exports = (router) => {
+	router.get('/:user/buyer', UsersController.buyer)
+	router.get('/:user/seller', UsersController.seller)
+	router.get('/:user/logistics', UsersController.logistics)
+	router.route('/:user/wallet')
+		.get(UsersController.getWallet)
+		.post(UsersController.postWallet)
+	router.route('/:user/product')
+		.get(OrderController.getProduct)
+		.post(OrderController.postProduct)
+	router.route('/:user/order')
+		.get(OrderController.order)
+		.post(OrderController.createOrderTx)
+	router.get('/:user/logisticsrequest', OrderController.logisticsrequest)
+	router.post('/:user/offerTx', OrderController.offerTx)
+	router.post('/:user/acceptOfferTx', OrderController.acceptOfferTx)
+	router.post('/:user/productHandoverTx', OrderController.productHandoverTx)
+	router.post('/:user/productDeliveredTx', OrderController.productDeliveredTx)
+	router.post('/login', AuthController.login)
 }

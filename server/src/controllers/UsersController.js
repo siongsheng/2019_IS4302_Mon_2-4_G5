@@ -1,59 +1,91 @@
 var axios = require('axios')
-var currUser = require('../config').currUser
 
 module.exports = {
-	async buyer (req, res) {
+	async buyer (req, res, next) {
 		try {
-			// axios.get('/api/system/ping')
-			// axios.get('http://localhost:${buyer1}/api/org.deliverlor.ecommerce.Buyer')
-			// 	.then(function(response){
-			// 		console.log(response.data)
-			// 		myself = response.data.participant
-			// 		console.log(response.status)
-			// 	}).catch(function(){
-			// 		console.log('err');
-			// 	})
-
-			let result = await axios.get(`http://localhost:${currUser}/api/org.deliverlor.ecommerce.Buyer`)
+			let result = await axios.get(`http://localhost:${req.port}/api/org.deliverlor.ecommerce.Buyer`)
 
 			res.send({
-				message: 'testmessage',
-				myself: result.data[0]
+				message: 'success',
+				buyers: result.data
 			})
 		} catch (err) {
 			res.status(400).send({
-				error: err,
-				currUser: currUser
+				error: err.toString(),
 			})
 		}
 	},
 
 	async seller (req, res) {
 		try {
-			let result = await axios.get(`http://localhost:${currUser}/api/org.deliverlor.ecommerce.Seller`)
+			let result = await axios.get(`http://localhost:${req.port}/api/org.deliverlor.ecommerce.Seller`)
 
 			res.send({
-				message: 'testmessage',
-				myself: result.data[0]
+				message: 'success',
+				sellers: result.data
 			})
 		} catch (err) {
 			res.status(400).send({
-				error: 'Error'
+				error: err.toString()
 			})
 		}
 	},
 
 	async logistics (req, res) {
 		try {
-			let result = await axios.get(`http://localhost:${currUser}/api/org.deliverlor.ecommerce.Logistics`)
+			let result = await axios.get(`http://localhost:${req.port}/api/org.deliverlor.ecommerce.Logistics`)
 
 			res.send({
-				message: 'testmessage',
-				myself: result.data[0]
+				message: 'success',
+				logs: result.data
 			})
 		} catch (err) {
 			res.status(400).send({
-				error: 'Error'
+				error: err.toString()
+			})
+		}
+	},
+
+	async getWallet (req, res) {
+		try {
+			let result = await axios.get(`http://localhost:${req.port}/api/org.deliverlor.ecommerce.Wallet`)
+
+			res.send({
+				message: 'success',
+				wallet: result.data
+			})
+		} catch (err) {
+			res.status(400).send({
+				error: err.toString()
+			})
+		}
+	},
+
+	async postWallet (req, res) {
+		try {
+			let tx, myself
+			if (req.query.amount > 0) {
+				tx = 'TopUpFundsTx'
+			} else {
+				req.query.amount = Math.abs(req.query.amount)
+				tx = 'WithdrawFundsTx'
+			}
+			let user = await axios.get(`http://localhost:${req.port}/api/system/ping`)
+			myself = user.data.participant
+			let result = await axios.post(`http://localhost:${req.port}/api/org.deliverlor.ecommerce.${tx}`,
+										{
+											amount: req.query.amount,
+											owner: myself
+										})
+
+			res.send({
+				message: 'success',
+				wallet: result.data
+			})
+		} catch (err) {
+			console.log(err)
+			res.status(400).send({
+				error: err.toString()
 			})
 		}
 	}
