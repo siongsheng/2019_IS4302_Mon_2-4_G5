@@ -21,19 +21,45 @@
     </div>
     <!-- user dashboard -->
     <div v-else id="user-dashboard">
-      hello, user!
+      hello, {{this.userEmail}} <br>
+
+      <h3>Your wallet has ${{this.wallet.balance}}</h3>
     </div>
   </div>
 </template>
 <script>
 import db from './firebaseInit'
 import firebase from 'firebase'
+import axios from 'axios'
 export default {
   name: 'dashboard',
   data () {
     return {
       users: [],
-      isAdmin: false
+      isAdmin: false,
+      userEmail: firebase.auth().currentUser.email,
+      wallet:{}
+    }
+  },
+  methods:{
+    findUser(){
+      if(firebase.auth().currentUser){
+        switch(firebase.auth().currentUser.email) {
+          case 'buyer1@test.com':
+          this.port = 3001;
+          break;
+          case 'seller1@test.com':
+          this.port = 3002;
+          break;
+          case 'logs1@test.com':
+          this.port = 3003;
+          break;
+          case 'logs2@test.com':
+          this.port = 3004;
+          break;
+        }
+      }
+      console.log(this.port);
     }
   },
   created () {
@@ -54,11 +80,22 @@ export default {
             this.users.push(data)
           })
         })
-      } else { 
+      } else {
         // if the user is a normal user, show user dashboard instead
         this.isAdmin = false;
       }
     }
+  },
+  mounted(){
+    this.findUser();
+    axios.get('http://localhost:' + this.port + '/api/org.deliverlor.ecommerce.Wallet')
+    .then((response) => {
+      console.log(response.data);
+      this.wallet = response.data[0];
+    })
+    .catch(error => {
+      console.log(error);
+    })
   }
 }
 </script>

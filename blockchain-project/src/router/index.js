@@ -52,7 +52,7 @@ let router = new Router({
       }
     },
     {
-      path: '/buyerAcceptBid',
+      path: '/buyerAcceptBid/:order_id',
       name: 'buyerAcceptBid',
       component: BuyerAcceptBid,
       meta:{

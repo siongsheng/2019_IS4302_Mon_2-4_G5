@@ -2,82 +2,30 @@
   <div id="buyerViewProduct">
     <h2 class="header">Products</h2>
     <div class="row">
-    <div class="col s4">
+    <div class="col s4" v-for="(product, p) in products">
       <div class="card">
         <div class="card-image">
           <img src="../assets/bag.jpg">
         </div>
         <div class="card-content">
-          <span class="card-title">Product Name</span>
-          <p>Price: $10 <br>
-             Description: I am a very simple card. I am good at containing small bits of information.<br>
-             Quantity Available: 10</p>
-
-
+          <span class="card-title">{{product.name}}</span>
+          <p>Price: $ {{product.price}}<br>
+             Description: {{product.description}}<br>
+             Quantity Available: {{product.stock}}</p>
         </div>
         <div class="card-action">
-          <select class="browser-default">
+          <select class="browser-default" v-model="selectedQty">
             <option value="" disabled selected>Select quantity</option>
             <option value="1">1</option>
             <option value="2">2</option>
             <option value="3">3</option>
           </select>
           <!-- <a href="#">This is a link</a> -->
+          <br>
+          <input v-model="desiredPrice[p]" placeholder="Desired Delivery Price ($)">
           <br>
           <!--To replace correct onclick function -->
-          <button class="btn waves-effect waves-light" onclick='btnTradeMarble(\""+row.marbleId+"\")'>Submit Order</button>
-
-        </div>
-      </div>
-    </div>
-
-    <div class="col s4">
-      <div class="card">
-        <div class="card-image">
-          <img src="../assets/shoe.jpg">
-
-        </div>
-        <div class="card-content">
-          <span class="card-title">Product Name</span>
-          <p>Price: $10 <br>
-             Description: I am a very simple card. I am good at containing small bits of information.<br>
-             Quantity Available: 10</p>
-        </div>
-        <div class="card-action">
-          <select class="browser-default">
-            <option value="" disabled selected>Select quantity</option>
-            <option value="1">1</option>
-            <option value="2">2</option>
-            <option value="3">3</option>
-          </select>
-          <!-- <a href="#">This is a link</a> -->
-          <br>
-          <button class="btn waves-effect waves-light" onclick="">Submit Order</button>
-        </div>
-      </div>
-    </div>
-
-    <div class="col s4">
-      <div class="card">
-        <div class="card-image">
-          <img src="../assets/tshirt.jpg">
-        </div>
-        <div class="card-content">
-          <span class="card-title">Product Name</span>
-          <p>Price: $10 <br>
-             Description: I am a very simple card. I am good at containing small bits of information.<br>
-             Quantity Available: 10</p>
-        </div>
-        <div class="card-action">
-          <select class="browser-default">
-            <option value="" disabled selected>Select quantity</option>
-            <option value="1">1</option>
-            <option value="2">2</option>
-            <option value="3">3</option>
-          </select>
-          <!-- <a href="#">This is a link</a> -->
-          <br>
-          <button class="btn waves-effect waves-light" onclick="">Submit Order</button>
+          <button class="btn waves-effect waves-light" v-on:click="submitOrder(product.Id, selectedQty, desiredPrice[p])">Submit Order</button>
         </div>
       </div>
     </div>
@@ -86,22 +34,67 @@
   </div>
 </template>
 <script>
-// FOR REFERENCE (DELETE AFTER USE) Example from lab 4
-function btnTradeMarble(marbleId){
-        let newOwnerId = $('#select-'+marbleId).val();
-        $.ajax({
-            method: "POST",
-            url: "/hlf/api/org.hyperledger_composer.marbles.TradeMarble",
-            data: {
-                "$class": "org.hyperledger_composer.marbles.TradeMarble",
-                "marble": "org.hyperledger_composer.marbles.Marble#"+marbleId,
-                "newOwner": newOwnerId
-            }
-        }).done(function(msg) {
-            console.log(msg);
-            location.reload();
-        }).fail(function() {
-            alert("Error performing trade");
-        })
+import firebase from 'firebase';
+import axios from 'axios';
+export default {
+  name: 'BuyerViewProduct',
+  data () {
+    return {
+      products: {},
+      selectedQty:'',
+      desiredPrice: {},
+      port: ''
     }
+  },
+  methods:{
+    findUser(){
+      if(firebase.auth().currentUser){
+        switch(firebase.auth().currentUser.email) {
+          case 'buyer1@test.com':
+          this.port = 3001;
+          break;
+          case 'seller1@test.com':
+          this.port = 3002;
+          break;
+          case 'logs1@test.com':
+          this.port = 3003;
+          break;
+          case 'logs2@test.com':
+          this.port = 3004;
+          break;
+        }
+      }
+      //console.log(this.port);
+    },
+    submitOrder(prodId, qty, price){
+      let buyer = "org.deliverlor.ecommerce.Buyer#" + firebase.auth().currentUser.email;
+      let prod = "org.deliverlor.ecommerce.Product#" + prodId;
+
+      axios.post('http://localhost:' + this.port + '/api/org.deliverlor.ecommerce.CreateOrderTx', {
+        "$class": "org.deliverlor.ecommerce.CreateOrderTx",
+        "Id": Math.floor(Math.random() * 10000),
+        "quantity": qty,
+        "desiredPrice": price,
+        "buyer": buyer,
+        "product": prod
+      }).then((response) => {
+        alert("success");
+      })
+      .catch((e) => {
+        console.error(e)
+      })
+    }
+  },
+  mounted(){
+    this.findUser();
+    axios.get('http://localhost:' + this.port + '/api/org.deliverlor.ecommerce.Product')
+    .then((response) => {
+      //console.log(response.data);
+      this.products = response.data;
+    })
+    .catch(error => {
+      console.log(error);
+    })
+  }
+}
 </script>
