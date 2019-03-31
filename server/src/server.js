@@ -8,7 +8,13 @@ var Express = require('express'),
 let App = Express()
 let router = Express.Router()
 App.use(router)
-App.use(cors())
+//App.use(cors())
+router.use(function(req, res, next) {
+  res.header('Access-Control-Allow-Origin', '*');
+  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
+  next();
+});
+
 App.use(bodyParser.json())
 App.use(bodyParser.urlencoded({extended: false}))
 

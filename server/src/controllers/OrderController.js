@@ -4,7 +4,7 @@ module.exports = {
 	async getProduct (req, res) {
 		try {
 			let result = await axios.get(`http://localhost:${req.port}/api/org.deliverlor.ecommerce.Product`)
-			
+
 			res.send({
 				message: 'success',
 				products: result.data
@@ -27,7 +27,7 @@ module.exports = {
 											stock: req.query.stock,
 											seller: req.user_id
 										})
-			
+
 			res.send({
 				message: 'success',
 				products: result.data
@@ -71,6 +71,7 @@ module.exports = {
 
 	async createOrderTx (req, res) {
 		try {
+			console.log(req.quantity);
 			var result = await axios.post(`http://localhost:${req.port}/api/org.deliverlor.ecommerce.CreateOrderTx`,
 										{
 											Id: 'id'+Date.now().toString(),

@@ -64,7 +64,6 @@ export default {
           break;
         }
       }
-      //console.log(this.port);
     },
     submitOrder(prodId, qty, price){
       let buyer = "org.deliverlor.ecommerce.Buyer#" + firebase.auth().currentUser.email;
@@ -87,10 +86,10 @@ export default {
   },
   mounted(){
     this.findUser();
-    axios.get('http://localhost:' + this.port + '/api/org.deliverlor.ecommerce.Product')
+    axios.get('http://localhost:3000/' + firebase.auth().currentUser.email + '/Product')
     .then((response) => {
       //console.log(response.data);
-      this.products = response.data;
+      this.products = response.data.products;
     })
     .catch(error => {
       console.log(error);

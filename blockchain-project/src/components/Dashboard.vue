@@ -23,7 +23,7 @@
     <div v-else id="user-dashboard">
       hello, {{this.userEmail}} <br>
 
-      <h3>Your wallet has ${{this.wallet.balance}}</h3>
+      <h3>Your wallet has ${{this.wallet[0].balance}}</h3>
     </div>
   </div>
 </template>
@@ -38,28 +38,7 @@ export default {
       users: [],
       isAdmin: false,
       userEmail: firebase.auth().currentUser.email,
-      wallet:{}
-    }
-  },
-  methods:{
-    findUser(){
-      if(firebase.auth().currentUser){
-        switch(firebase.auth().currentUser.email) {
-          case 'buyer1@test.com':
-          this.port = 3001;
-          break;
-          case 'seller1@test.com':
-          this.port = 3002;
-          break;
-          case 'logs1@test.com':
-          this.port = 3003;
-          break;
-          case 'logs2@test.com':
-          this.port = 3004;
-          break;
-        }
-      }
-      console.log(this.port);
+      wallet:[]
     }
   },
   created () {
@@ -87,11 +66,10 @@ export default {
     }
   },
   mounted(){
-    this.findUser();
-    axios.get('http://localhost:' + this.port + '/api/org.deliverlor.ecommerce.Wallet')
+    axios.get('http://localhost:3000/' + firebase.auth().currentUser.email + '/Wallet')
     .then((response) => {
-      console.log(response.data);
-      this.wallet = response.data[0];
+      //console.log(response.data.wallet);
+      this.wallet = response.data.wallet
     })
     .catch(error => {
       console.log(error);

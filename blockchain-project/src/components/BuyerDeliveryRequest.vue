@@ -85,10 +85,10 @@ export default {
   },
   mounted(){
     this.findUser();
-    axios.get('http://localhost:' + this.port + '/api/org.deliverlor.ecommerce.Order')
+    axios.get('http://localhost:3000/' + firebase.auth().currentUser.email + '/Order')
     .then((response) => {
-      console.log(response.data);
-      this.orders = response.data;
+      console.log(response.data.orders);
+      this.orders = response.data.orders;
     })
     .then((response) => {
       this.getProdNames();

@@ -15,7 +15,10 @@
   },
   "dependencies": {
     "axios": "^0.18.0",
+    "axios-curlirize": "^1.1.0",
+    "console": "^0.7.2",
     "firebase": "^5.9.1",
+    "qs": "^6.7.0",
     "vue": "^2.5.2",
     "vue-router": "^3.0.1"
   },
