@@ -64,17 +64,17 @@ module.exports = {
 	async postWallet (req, res) {
 		try {
 			let tx, myself
-			if (req.query.amount > 0) {
+			if (req.body.amount > 0) {
 				tx = 'TopUpFundsTx'
 			} else {
-				req.query.amount = Math.abs(req.query.amount)
+				req.body.amount = Math.abs(req.body.amount)
 				tx = 'WithdrawFundsTx'
 			}
 			let user = await axios.get(`http://localhost:${req.port}/api/system/ping`)
 			myself = user.data.participant
 			let result = await axios.post(`http://localhost:${req.port}/api/org.deliverlor.ecommerce.${tx}`,
 										{
-											amount: req.query.amount,
+											amount: req.body.amount,
 											owner: myself
 										})
 

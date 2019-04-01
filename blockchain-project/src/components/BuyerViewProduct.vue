@@ -69,9 +69,7 @@ export default {
       let buyer = "org.deliverlor.ecommerce.Buyer#" + firebase.auth().currentUser.email;
       let prod = "org.deliverlor.ecommerce.Product#" + prodId;
 
-      axios.post('http://localhost:' + this.port + '/api/org.deliverlor.ecommerce.CreateOrderTx', {
-        "$class": "org.deliverlor.ecommerce.CreateOrderTx",
-        "Id": Math.floor(Math.random() * 10000),
+      axios.post('http://localhost:3000/' + firebase.auth().currentUser.email + '/order', {
         "quantity": qty,
         "desiredPrice": price,
         "buyer": buyer,

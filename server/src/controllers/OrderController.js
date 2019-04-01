@@ -21,10 +21,10 @@ module.exports = {
 			let result = await axios.post(`http://localhost:${req.port}/api/org.deliverlor.ecommerce.Product`,
 										{
 											Id: 'id'+Date.now().toString(),
-											name: req.query.name,
-											price: req.query.price,
-											description: req.query.description,
-											stock: req.query.stock,
+											name: req.body.name,
+											price: req.body.price,
+											description: req.body.description,
+											stock: req.body.stock,
 											seller: req.user_id
 										})
 
@@ -71,14 +71,13 @@ module.exports = {
 
 	async createOrderTx (req, res) {
 		try {
-			console.log(req.quantity);
 			var result = await axios.post(`http://localhost:${req.port}/api/org.deliverlor.ecommerce.CreateOrderTx`,
 										{
 											Id: 'id'+Date.now().toString(),
-											quantity: req.query.quantity,
-											desiredPrice: req.query.desiredPrice,
-											buyer: req.user_id,
-											product: req.query.product
+											quantity: req.body.quantity,
+											desiredPrice: req.body.desiredPrice,
+											buyer: req.body.buyer,
+											product: req.body.product
 										})
 
 			res.send({
@@ -87,23 +86,23 @@ module.exports = {
 			})
 		} catch (err) {
 			res.status(400).send({
-				error: result
+				error: err.toString()
 			})
 		}
 	},
 
 	async offerTx (req, res) {
-		if (typeof(req.query.remark) == 'undefined' || req.query.remark == '') {
-			req.query.remark = 'NIL'
+		if (typeof(req.body.remark) == 'undefined' || req.body.remark == '') {
+			req.body.remark = 'NIL'
 		}
 		try{
 			var result = await axios.post(`http://localhost:${req.port}/api/org.deliverlor.ecommerce.OfferTx`,
 										{
-											offerPrice: req.query.offerPrice,
+											offerPrice: req.body.offerPrice,
 											created: new Date(),
-											remark: req.query.remark,
-											logistics: req.query.logistics,
-											logisticsRequest: req.query.logisticsRequest
+											remark: req.body.remark,
+											logistics: req.body.logistics,
+											logisticsRequest: req.body.logisticsRequest
 										})
 		} catch (err) {
 			res.status(400).send({
@@ -121,8 +120,8 @@ module.exports = {
 		try {
 			var result = await axios.post(`http://localhost:${req.port}/api/org.deliverlor.ecommerce.AcceptOfferTx`,
 										{
-											confirmedDeliverer: req.query.confirmedDeliverer,
-											logisticsRequest: req.query.logisticsRequest
+											confirmedDeliverer: req.body.confirmedDeliverer,
+											logisticsRequest: req.body.logisticsRequest
 										})
 		} catch (err) {
 			res.status(400).send({
@@ -139,7 +138,7 @@ module.exports = {
 		try {
 			let result = await axios.post(`http://localhost:${req.port}/api/org.deliverlor.ecommerce.ProductHandoverTx`,
 										{
-											order: req.query.order
+											order: req.body.order
 										})
 
 			res.send({
@@ -157,7 +156,7 @@ module.exports = {
 		try {
 			let result = await axios.post(`http://localhost:${req.port}/api/org.deliverlor.ecommerce.ProductDeliveredTx`,
 										{
-											order: req.query.order
+											order: req.body.order
 										})
 
 			res.send({

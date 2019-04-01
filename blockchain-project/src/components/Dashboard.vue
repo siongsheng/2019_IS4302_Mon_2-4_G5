@@ -40,7 +40,8 @@
     </div>
     <!-- user dashboard -->
     <div v-else id="user-dashboard">
-      <div v-if="isBuyer" id="buyer-dashboard">
+      <h5 class="header">Welcome back, {{this.userEmail}}</h5>
+      <!-- <div v-if="isBuyer" id="buyer-dashboard">
         <h5 class="header">Welcome back, buyer1</h5>
         <h6>View <a href="#/buyerViewProduct"> products </a> to begin</h6>
       </div>
@@ -58,7 +59,8 @@
       <div v-if="isLogs2" id="logs-dashboard">
         <h5 class="header">Welcome back, logs2</h5>
         <h6>Place<a href="#/logisticsPlaceBid"> delivery bid </a> to begin</h6>
-      </div>
+      </div> -->
+      <h3>Your wallet has ${{this.wallet[0].balance}}</h3>
     </div>
 
   </div>
@@ -72,6 +74,8 @@ export default {
   data () {
     return {
       users: [],
+      userEmail: firebase.auth().currentUser.email,
+      wallet:[],
       isAdmin: false,
       isBuyer: false,
       isSeller: false,
