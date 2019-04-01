@@ -1,5 +1,5 @@
 <template>
-  <nav>
+  <nav class = "nav-extended">
     <div class="nav-wrapper blue darken-2">
       <div class="container">
         <router-link to="/" class="brand-logo">DeliverLor</router-link>
@@ -12,6 +12,22 @@
           </li>
 
         </ul>
+
+        <div v-if="isBuyer || isSeller || isLogs" class="nav-content">
+          <ul class="tabs tabs-transparent">
+            <li v-if="isBuyer" class="tab"><a href="#/buyerViewProduct">Products</a></li>
+            <li v-if="isBuyer" class="tab"><a href="#/buyerDeliveryRequest">Delivery Request</a></li>
+            <li v-if="isBuyer" class="tab"><a href="#/buyerDeliveryStatus">Delivery Status</a></li>
+            <li v-if="isBuyer" class="tab"><a href="#/buyerConfirmDeliveryx">Confirm Delivery</a></li>
+
+            <li v-if="isLogs" class="tab"><a href="#/logisticsDeliveryRequest">Bid Delivery</a></li>
+            <li v-if="isLogs" class="tab"><a href="#/logisticsDeliveryRequestStatus">Delivery Request Status</a></li>
+            <li v-if="isLogs" class="tab"><a href="#/logisticsProductHandover">Product Handover</a></li>
+
+            <li v-if="isSeller" class="tab"><a href="#/sellerDeliveryRequest">Delivery Status</a></li>
+
+          </ul>
+        </div>
       </div>
     </div>
   </nav>
@@ -26,6 +42,10 @@
       return{
         isloggedIn: false,
         currentUser: false,
+        isAdmin: false,
+        isBuyer: false,
+        isSeller: false,
+        isLogs: false,
         image: require('@/assets/Delivery.png')
       }
     },
@@ -41,6 +61,22 @@
           }).then(()=>{
           })
         })
+        if (firebase.auth().currentUser.email === 'group5@test.com'){
+          console.log('this is admin');
+          this.isAdmin = true
+        }
+        if (firebase.auth().currentUser.email === 'buyer1@test.com'){
+          console.log('this is buyer');
+          this.isBuyer = true
+        }
+        if (firebase.auth().currentUser.email === 'seller1@test.com'){
+          console.log('this is seller');
+          this.isSeller = true
+        }
+        if (firebase.auth().currentUser.email === 'logs1@test.com' || firebase.auth().currentUser.email === 'logs2@test.com'){
+          console.log('this is logistics');
+          this.isLogs = true
+        }
       }
     },
     methods:{
