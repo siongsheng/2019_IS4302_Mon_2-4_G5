@@ -25,7 +25,7 @@
           <input v-model="desiredPrice[p]" placeholder="Desired Delivery Price ($)">
           <br>
           <!--To replace correct onclick function -->
-          <button class="btn waves-effect waves-light" v-on:click="submitOrder(product.Id, selectedQty, desiredPrice[p])">Submit Order</button>
+          <button class="btn waves-effect waves-light" v-on:click="submitOrder(product.price, product.stock, product.Id, selectedQty, desiredPrice[p])">Submit Order</button>
         </div>
       </div>
     </div>
@@ -43,51 +43,64 @@ export default {
       products: {},
       selectedQty:'',
       desiredPrice: {},
-      port: ''
+      buyer:[],
+      //port: '',
+      wallet:[]
     }
   },
   methods:{
-    findUser(){
-      if(firebase.auth().currentUser){
-        switch(firebase.auth().currentUser.email) {
-          case 'buyer1@test.com':
-          this.port = 3001;
-          break;
-          case 'seller1@test.com':
-          this.port = 3002;
-          break;
-          case 'logs1@test.com':
-          this.port = 3003;
-          break;
-          case 'logs2@test.com':
-          this.port = 3004;
-          break;
-        }
-      }
-    },
-    submitOrder(prodId, qty, price){
-      let buyer = "org.deliverlor.ecommerce.Buyer#" + firebase.auth().currentUser.email;
+    submitOrder(price, stock, prodId, qty, delPrice){
+      let buyer = "org.deliverlor.ecommerce.Buyer#" + this.buyer.Id;
       let prod = "org.deliverlor.ecommerce.Product#" + prodId;
 
-      axios.post('http://localhost:3000/' + firebase.auth().currentUser.email + '/order', {
-        "quantity": qty,
-        "desiredPrice": price,
-        "buyer": buyer,
-        "product": prod
-      }).then((response) => {
-        alert("success");
-      })
-      .catch((e) => {
-        console.error(e)
-      })
+      let checkQty = stock-qty;
+      let totalPrice = +(qty*price) + +delPrice;
+      console.log(totalPrice)
+
+      if(checkQty > 0 && totalPrice < this.wallet[0].balance){
+        axios.post('http://localhost:3000/' + firebase.auth().currentUser.email + '/order', {
+          "quantity": qty,
+          "desiredPrice": delPrice,
+          "buyer": buyer,
+          "product": prod
+        }).then((response) => {
+          alert("success");
+        })
+        .catch((e) => {
+          console.error(e)
+        })
+      }
+      else if(checkQty < 0){
+        alert("Quantity is more than stock!")
+      }
+      else if (totalPrice > this.wallet[0].balance){
+        alert("You do not have sufficient money in your wallet!")
+      }
     }
   },
   mounted(){
-    this.findUser();
-    axios.get('http://localhost:3000/' + firebase.auth().currentUser.email + '/Product')
+    //this.findUser();
+    axios.get('http://localhost:3000/' + firebase.auth().currentUser.email + '/product')
     .then((response) => {
       //console.log(response.data);
       this.products = response.data.products;
+    })
+    .catch(error => {
+      console.log(error);
+    })
+
+    axios.get('http://localhost:3000/' + firebase.auth().currentUser.email + '/wallet')
+    .then((response) => {
+      //console.log(response.data.wallet);
+      this.wallet = response.data.wallet
+    })
+    .catch(error => {
+      console.log(error);
+    })
+
+    axios.get('http://localhost:3000/' + firebase.auth().currentUser.email + '/buyer')
+    .then((response) => {
+      this.buyer = response.data.buyers[0];
     })
     .catch(error => {
       console.log(error);

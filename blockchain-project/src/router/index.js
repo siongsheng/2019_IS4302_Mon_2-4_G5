@@ -92,7 +92,7 @@ let router = new Router({
       }
     },
     {
-      path: '/logisticsPlaceBid',
+      path: '/logisticsPlaceBid/:logReq_id',
       name: 'logisticsPlaceBid',
       component: LogisticsPlaceBid,
       meta:{

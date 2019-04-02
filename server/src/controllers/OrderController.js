@@ -98,6 +98,7 @@ module.exports = {
 		try{
 			var result = await axios.post(`http://localhost:${req.port}/api/org.deliverlor.ecommerce.OfferTx`,
 										{
+											Id: 'id'+Date.now().toString(),
 											offerPrice: req.body.offerPrice,
 											created: new Date(),
 											remark: req.body.remark,

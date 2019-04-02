@@ -85,9 +85,9 @@ export default {
   },
   mounted(){
     this.findUser();
-    axios.get('http://localhost:3000/' + firebase.auth().currentUser.email + '/Order')
+    axios.get('http://localhost:3000/' + firebase.auth().currentUser.email + '/order')
     .then((response) => {
-      console.log(response.data.orders);
+      //console.log(response.data.orders);
       this.orders = response.data.orders;
     })
     .then((response) => {
