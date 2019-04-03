@@ -1,92 +1,148 @@
 var axios = require('axios')
 
 module.exports = {
-	async getProduct (req, res) {
+	async products (req, res) {
 		try {
-			let result = await axios.get(`http://localhost:${req.port}/api/org.deliverlor.ecommerce.Product`)
+			let result = await axios.get(`${req.composerAddress}:${req.port}${req.namespace}Product`)
 
 			res.send({
 				message: 'success',
-				products: result.data
+				results: result.data
 			})
 		} catch (err) {
-			res.status(400).send({
-				error: err.toString()
+			res.status(err.response.data.error.statusCode).send({
+				error: err.toString(),
+				message: err.response.data.error.message
+			})
+		}
+	},
+
+	async product (req, res) {
+		try {
+			let result = await axios.get(`${req.composerAddress}:${req.port}${req.namespace}Product/${req.body.product_id}`)
+
+			res.send({
+				message: 'success',
+				results: result.data
+			})
+		} catch (err) {
+			res.status(err.response.data.error.statusCode).send({
+				error: err.toString(),
+				message: err.response.data.error.message
 			})
 		}
 	},
 
 	async postProduct (req, res) {
 		try {
-			let result = await axios.post(`http://localhost:${req.port}/api/org.deliverlor.ecommerce.Product`,
+			let user = await axios.get(`${req.composerAddress}:${req.port}/api/system/ping`)
+			myself = user.data.participant
+			let result = await axios.post(`${req.composerAddress}:${req.port}${req.namespace}Product`,
 										{
 											Id: 'id'+Date.now().toString(),
 											name: req.body.name,
 											price: req.body.price,
 											description: req.body.description,
 											stock: req.body.stock,
-											seller: req.user_id
+											seller: myself
 										})
 
 			res.send({
 				message: 'success',
-				products: result.data
+				results: result.data
 			})
 		} catch (err) {
-			res.status(400).send({
-				error: err.toString()
+			res.status(err.response.data.error.statusCode).send({
+				error: err.toString(),
+				message: err.response.data.error.message
+			})
+		}
+	},
+
+	async orders (req, res) {
+		try {
+			let result = await axios.get(`${req.composerAddress}:${req.port}${req.namespace}Order`)
+
+			res.send({
+				message: 'success',
+				results: result.data
+			})
+		} catch (err) {
+			res.status(err.response.data.error.statusCode).send({
+				error: err.toString(),
+				message: err.response.data.error.message
 			})
 		}
 	},
 
 	async order (req, res) {
 		try {
-			let result = await axios.get(`http://localhost:${req.port}/api/org.deliverlor.ecommerce.Order`)
-
+			let result = await axios.get(`${req.composerAddress}:${req.port}${req.namespace}Order/${req.body.order_id}`)
+			
 			res.send({
 				message: 'success',
-				orders: result.data
+				results: result.data
 			})
 		} catch (err) {
-			res.status(400).send({
-				error: err.toString()
-			})
-		}
-	},
-
-	async logisticsrequest (req, res) {
-		try {
-			let result = await axios.get(`http://localhost:${req.port}/api/org.deliverlor.ecommerce.LogisticsRequest`)
-
-			res.send({
-				message: 'success',
-				logisticsRequests: result.data
-			})
-		} catch (err) {
-			res.status(400).send({
-				error: err.toString()
+			res.status(err.response.data.error.statusCode).send({
+				error: err.toString(),
+				message: err.response.data.error.message
 			})
 		}
 	},
 
 	async createOrderTx (req, res) {
 		try {
-			var result = await axios.post(`http://localhost:${req.port}/api/org.deliverlor.ecommerce.CreateOrderTx`,
+			let user = await axios.get(`${req.composerAddress}:${req.port}/api/system/ping`)
+			myself = user.data.participant
+			let result = await axios.post(`${req.composerAddress}:${req.port}${req.namespace}CreateOrderTx`,
 										{
 											Id: 'id'+Date.now().toString(),
 											quantity: req.body.quantity,
 											desiredPrice: req.body.desiredPrice,
-											buyer: req.body.buyer,
+											buyer: myself,
 											product: req.body.product
 										})
+			res.send({
+				message: 'success',
+				results: result.data
+			})
+		} catch (err) {
+			res.status(err.response.data.error.statusCode).send({
+				error: err.toString(),
+				message: err.response.data.error.message
+			})
+		}
+	},
+
+	async logisticsrequests (req, res) {
+		try {
+			let result = await axios.get(`${req.composerAddress}:${req.port}${req.namespace}LogisticsRequest`)
 
 			res.send({
 				message: 'success',
-				result: result.data
+				results: result.data
 			})
 		} catch (err) {
-			res.status(400).send({
-				error: err.toString()
+			res.status(err.response.data.error.statusCode).send({
+				error: err.toString(),
+				message: err.response.data.error.message
+			})
+		}
+	},
+
+	async logisticsrequest (req, res) {
+		try {
+			let result = await axios.get(`${req.composerAddress}:${req.port}${req.namespace}LogisticsRequest/${req.body.logisticsRequest_id}`)
+
+			res.send({
+				message: 'success',
+				results: result.data
+			})
+		} catch (err) {
+			res.status(err.response.data.error.statusCode).send({
+				error: err.toString(),
+				message: err.response.data.error.message
 			})
 		}
 	},
@@ -96,77 +152,79 @@ module.exports = {
 			req.body.remark = 'NIL'
 		}
 		try{
-			var result = await axios.post(`http://localhost:${req.port}/api/org.deliverlor.ecommerce.OfferTx`,
+			let result = await axios.post(`${req.composerAddress}:${req.port}${req.namespace}OfferTx`,
 										{
-											Id: 'id'+Date.now().toString(),
 											offerPrice: req.body.offerPrice,
 											created: new Date(),
 											remark: req.body.remark,
 											logistics: req.body.logistics,
 											logisticsRequest: req.body.logisticsRequest
 										})
+			res.send({
+				message: 'success',
+				results: result.data
+			})
 		} catch (err) {
-			res.status(400).send({
-				error: err.toString()
+			res.status(err.response.data.error.statusCode).send({
+				error: err.toString(),
+				message: err.response.data.error.message,
 			})
 		}
-
-		res.send({
-			message: 'success',
-			result: result.data
-		})
 	},
 
 	async acceptOfferTx (req, res) {
 		try {
-			var result = await axios.post(`http://localhost:${req.port}/api/org.deliverlor.ecommerce.AcceptOfferTx`,
+			let result = await axios.post(`${req.composerAddress}:${req.port}${req.namespace}AcceptOfferTx`,
 										{
 											confirmedDeliverer: req.body.confirmedDeliverer,
 											logisticsRequest: req.body.logisticsRequest
 										})
+			res.send({
+				message: 'success',
+				results: result.data
+			})
 		} catch (err) {
-			res.status(400).send({
-				error: err.toString()
+			res.status(err.response.data.error.statusCode).send({
+				error: err.toString(),
+				message: err.response.data.error.message
 			})
 		}
-		res.send({
-			message: 'success',
-			result: result.data
-		})
 	},
 
 	async productHandoverTx (req, res) {
 		try {
-			let result = await axios.post(`http://localhost:${req.port}/api/org.deliverlor.ecommerce.ProductHandoverTx`,
+			let result = await axios.post(`${req.composerAddress}:${req.port}${req.namespace}ProductHandoverTx`,
 										{
 											order: req.body.order
 										})
 
 			res.send({
 				message: 'success',
-				result: result.data
+				results: result.data
 			})
 		} catch (err) {
-			res.status(400).send({
-				error: err.toString()
+			res.status(err.response.data.error.statusCode).send({
+				error: err.toString(),
+				message: err.response.data.error.message
 			})
 		}
 	},
 
 	async productDeliveredTx (req, res) {
 		try {
-			let result = await axios.post(`http://localhost:${req.port}/api/org.deliverlor.ecommerce.ProductDeliveredTx`,
+			let result = await axios.post(`${req.composerAddress}:${req.port}${req.namespace}ProductDeliveredTx`,
 										{
 											order: req.body.order
 										})
 
 			res.send({
 				message: 'success',
-				result: result.data
+				results: result.data
 			})
 		} catch (err) {
-			res.status(400).send({
-				error: err.toString()
+			res.status(err.response.data.error.statusCode).send({
+				error: err.toString(),
+				message: err.response.data.error.message
 			})
 		}
 	}
