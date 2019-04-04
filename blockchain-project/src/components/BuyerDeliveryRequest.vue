@@ -46,36 +46,26 @@ export default {
     }
   },
   methods:{
-    findUser(){
-      if(firebase.auth().currentUser){
-        switch(firebase.auth().currentUser.email) {
-          case 'buyer1@test.com':
-          this.port = 3001;
-          break;
-          case 'seller1@test.com':
-          this.port = 3002;
-          break;
-          case 'logs1@test.com':
-          this.port = 3003;
-          break;
-          case 'logs2@test.com':
-          this.port = 3004;
-          break;
-        }
-      }
-      //console.log(this.port);
-    },
     getProdNames(){
       for(var i=0; i<this.orders.length; i++){
+        //console.log(this.orders[i].Id + ' ' + this.orders[i].product);
         this.products.push(this.orders[i].product);
+        // axios.get('http://localhost:3000/' + firebase.auth().currentUser.email + '/order/' + this.orders[i].Id)
+        // .then((response) => {
+        //   console.log(response.data.results.product)
+        //   this.prodNames = response.data.results.product.name;
+        // })
+        // .catch(error => {
+        //   console.log(error);
+        // })
       }
 
       for(var j=0; j<this.products.length; j++){
         console.log(this.products[j].substring(42));
-        axios.get('http://localhost:' + this.port + '/api/org.deliverlor.ecommerce.Product/' +this.products[j].substring(42))
+        axios.get('http://localhost:3000/' + firebase.auth().currentUser.email + '/product/' +this.products[j].substring(42))
         .then((response) => {
-          //console.log(response.data.name);
-          this.prodNames.push(response.data.name);
+          console.log(response.data.results.name);
+          this.prodNames.push(response.data.results.name);
         })
         .catch(error => {
           console.log(error);
@@ -84,11 +74,10 @@ export default {
     }
   },
   mounted(){
-    this.findUser();
     axios.get('http://localhost:3000/' + firebase.auth().currentUser.email + '/order')
     .then((response) => {
-      //console.log(response.data.orders);
-      this.orders = response.data.orders;
+      //console.log(response.data.results);
+      this.orders = response.data.results;
     })
     .then((response) => {
       this.getProdNames();

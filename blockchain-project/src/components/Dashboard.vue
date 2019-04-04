@@ -127,7 +127,7 @@ export default {
     axios.get('http://localhost:3000/' + firebase.auth().currentUser.email + '/Wallet')
     .then((response) => {
       //console.log(response.data.wallet);
-      this.wallet = response.data.wallet
+      this.wallet = response.data.results
     })
     .catch(error => {
       console.log(error);

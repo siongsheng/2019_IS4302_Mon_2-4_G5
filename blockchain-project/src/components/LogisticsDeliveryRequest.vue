@@ -54,25 +54,6 @@ export default {
     }
   },
   methods:{
-    findUser(){
-      if(firebase.auth().currentUser){
-        switch(firebase.auth().currentUser.email) {
-          case 'buyer1@test.com':
-          this.port = 3001;
-          break;
-          case 'seller1@test.com':
-          this.port = 3002;
-          break;
-          case 'logs1@test.com':
-          this.port = 3003;
-          break;
-          case 'logs2@test.com':
-          this.port = 3004;
-          break;
-        }
-      }
-      //console.log(this.port);
-    },
     isDisabled(state){
       if (state !== "OPEN"){
         return true;
@@ -84,13 +65,14 @@ export default {
       }
     },
     getOrderQuantity(){
+      var buyer = 'buyer1@test.com'
       for(var j=0; j<this.orders.length; j++){
         console.log(this.orders[j].substring(40));
-        axios.get('http://localhost:3001' + '/api/org.deliverlor.ecommerce.Order/' +this.orders[j].substring(40))
+        axios.get('http://localhost:3000/' + buyer +  '/order/' + this.orders[j].substring(40))
         .then((response) => {
           //console.log(response.data.quantity);
-          this.orderQtys.push(response.data.quantity);
-          this.products.push(response.data.product);
+          this.orderQtys.push(response.data.results.quantity);
+          this.products.push(response.data.results.product);
           //console.log("it is a:" + this.products.length)
         })
         .catch(error => {
@@ -101,11 +83,11 @@ export default {
     },
     getProductNames(){
       for(var k=0; k<this.products.length; k++){
-        axios.get('http://localhost:' + this.port + '/api/org.deliverlor.ecommerce.Product/' + this.products[k].substring(42))
+        axios.get('http://localhost:3000/' + firebase.auth().currentUser.email + '/product/' + this.products[k].substring(42))
         .then((response) => {
           //console.log(response.data.name);
-          this.prodNames.push(response.data.name);
-          this.sellers.push(response.data.seller);
+          this.prodNames.push(response.data.results.name);
+          this.sellers.push(response.data.results.seller);
         })
         .catch(error => {
           console.log(error);
@@ -114,11 +96,11 @@ export default {
     },
     getSellerNames(){
       for(var k=0; k<this.sellers.length; k++){
-        axios.get('http://localhost:3002' + '/api/org.deliverlor.ecommerce.Seller/' + this.sellers[k].substring(41))
+        axios.get('http://localhost:3000/' + firebase.auth().currentUser.email + '/seller/' + this.sellers[k].substring(41))
         .then((response) => {
           //console.log(response.data.name);
-          this.sellerNames.push(response.data.name);
-          this.sellerContacts.push(response.data.contactNum)
+          this.sellerNames.push(response.data.results.name);
+          this.sellerContacts.push(response.data.results.contactNum)
         })
         .catch(error => {
           console.log(error);
@@ -128,12 +110,11 @@ export default {
     }
   },
   mounted(){
-    this.findUser();
     var self = this;
     axios.get('http://localhost:3000/' + firebase.auth().currentUser.email + '/logisticsrequest')
     .then((response) => {
-      console.log(response.data.logisticsRequests);
-      this.logReqs = response.data.logisticsRequests;
+      console.log(response.data.results);
+      this.logReqs = response.data.results;
     })
     .then((response) => {
       this.getOrders();

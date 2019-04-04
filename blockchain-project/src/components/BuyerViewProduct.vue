@@ -57,7 +57,7 @@ export default {
       let totalPrice = +(qty*price) + +delPrice;
       console.log(totalPrice)
 
-      if(checkQty > 0 && totalPrice < this.wallet[0].balance){
+      if(checkQty >= 0 && totalPrice < this.wallet[0].balance){
         axios.post('http://localhost:3000/' + firebase.auth().currentUser.email + '/order', {
           "quantity": qty,
           "desiredPrice": delPrice,
@@ -83,7 +83,7 @@ export default {
     axios.get('http://localhost:3000/' + firebase.auth().currentUser.email + '/product')
     .then((response) => {
       //console.log(response.data);
-      this.products = response.data.products;
+      this.products = response.data.results;
     })
     .catch(error => {
       console.log(error);
@@ -92,7 +92,7 @@ export default {
     axios.get('http://localhost:3000/' + firebase.auth().currentUser.email + '/wallet')
     .then((response) => {
       //console.log(response.data.wallet);
-      this.wallet = response.data.wallet
+      this.wallet = response.data.results
     })
     .catch(error => {
       console.log(error);
@@ -100,7 +100,7 @@ export default {
 
     axios.get('http://localhost:3000/' + firebase.auth().currentUser.email + '/buyer')
     .then((response) => {
-      this.buyer = response.data.buyers[0];
+      this.buyer = response.data.results[0];
     })
     .catch(error => {
       console.log(error);

@@ -41,25 +41,6 @@ export default {
     }
   },
   methods:{
-    findUser(){
-      if(firebase.auth().currentUser){
-        switch(firebase.auth().currentUser.email) {
-          case 'buyer1@test.com':
-          this.port = 3001;
-          break;
-          case 'seller1@test.com':
-          this.port = 3002;
-          break;
-          case 'logs1@test.com':
-          this.port = 3003;
-          break;
-          case 'logs2@test.com':
-          this.port = 3004;
-          break;
-        }
-      }
-      //console.log(this.port);
-    },
     submitBid(bid){
       let logs = "org.deliverlor.ecommerce.Logistics#" + this.logistics.Id;
       let logReq = "org.deliverlor.ecommerce.LogisticsRequest#" + this.$route.params.logReq_id;
@@ -79,11 +60,10 @@ export default {
     }
   },
   mounted(){
-    this.findUser();
     var self = this;
-    axios.get('http://localhost:' + this.port + '/api/org.deliverlor.ecommerce.LogisticsRequest/'  + this.$route.params.logReq_id)
+    axios.get('http://localhost:3000/' + firebase.auth().currentUser.email + '/logisticsrequest/'  + this.$route.params.logReq_id)
     .then((response) => {
-      this.logReq = response.data;
+      this.logReq = response.data.results;
     })
     .catch(error => {
       console.log(error);
@@ -91,7 +71,7 @@ export default {
     axios.get('http://localhost:3000/' +  firebase.auth().currentUser.email + '/logistics')
     .then((response) => {
       //console.log(response.data.logs[0]);
-      this.logistics = response.data.logs[0];
+      this.logistics = response.data.results.logs[0];
     })
     .catch(error => {
       console.log(error);
