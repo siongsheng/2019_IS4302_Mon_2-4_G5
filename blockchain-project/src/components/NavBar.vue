@@ -26,7 +26,7 @@
             <li v-if="isLogs" class="tab"><a href="#/logisticsProductHandover">Product Handover</a></li>
 
             <li v-if="isSeller" class="tab"><a href="#/sellerDeliveryRequest">Delivery Status</a></li>
-
+            <li v-if="isSeller" class="tab"><a href="#/sellerViewProduct">View My Products</a></li>
           </ul>
         </div>
       </div>
