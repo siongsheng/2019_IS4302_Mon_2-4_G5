@@ -1,7 +1,10 @@
 <template>
   <div id="buyerAcceptBid">
     <ul class="collection with-header">
-      <li class="collection-header"><h4>Accept Bid for {{this.$route.params.order_id}} [{{logReqState}}]</h4></li>
+      <li class="collection-header">
+        <h4>Accept Bid for {{this.$route.params.order_id}} [{{logReqState}}]</h4>
+        <p v-if="confirmed()" style="color:red">Winner: {{this.logReq.confirmedDeliverer.substring(44)}}</p>
+      </li>
       <li class="collection-item avatar" v-for="(offer, off) in offers">
         <img src="../assets/truck.png" alt="" class="circle">
       <span class="title">Logistics ID: {{offer.logistics.substring(44)}} </span>
@@ -29,6 +32,9 @@ export default {
     }
   },
   methods:{
+    confirmed(){
+      return this.logReq.confirmedDeliverer
+    },
     //returns true if the log req is still open
     isOpen(){
       if(this.logReq.state == 'OPEN'){
