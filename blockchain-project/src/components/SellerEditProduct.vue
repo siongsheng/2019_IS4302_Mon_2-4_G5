@@ -2,7 +2,7 @@
   <div id="sellerEditProduct">
     <h3>Edit Product</h3>
         <div class="row">
-      <form @submit.prevent="updateUser" class="col s12">
+      <form @submit.prevent="updateProduct" class="col s12">
         <div class="row">
           <div class="input-field col s12">
             <input type="text" placeholder="Product ID#" v-model="product_id" required disabled>
@@ -60,6 +60,7 @@ export default {
   },
   methods: {
     updateProduct () { //TODO
+      alert("method not supported")
     }
   },
   mounted(){
