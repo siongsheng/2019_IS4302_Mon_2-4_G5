@@ -15,7 +15,9 @@
         </div>
         <div class="card-action">
           <!--To replace correct onclick function -->
-          <button class="btn waves-effect waves-light" v-on:click="editProduct(product.Id)">Edit</button>
+          <router-link v-bind:to="{ name: 'sellerEditProduct', params:{product_id: product.Id} }" >
+            Edit
+          </router-link>
         </div>
       </div>
     </div>
@@ -39,7 +41,15 @@ export default {
   methods:{
   },
   mounted(){
-    //this.findUser();
+    //get the seller object 
+    axios.get('http://localhost:3000/' + firebase.auth().currentUser.email + '/seller')
+    .then((response) => {
+      this.seller = response.data.results[0];
+    })
+    .catch(error => {
+      console.log(error);
+    })
+    //the the product objects
     axios.get('http://localhost:3000/' + firebase.auth().currentUser.email + '/product')
     .then((response) => {
       //loop for products to add only the products the seller own to the list
@@ -48,10 +58,9 @@ export default {
         var p = response.data.results[i]
         var s = p.seller.substring(41) //sellerx
         var u = firebase.auth().currentUser.email //sellerx@test.com
-        console.log(u)
         if (u.includes(s)){
           this.products.push(p)
-        }     
+        }
       }
     })
     .catch(error => {
