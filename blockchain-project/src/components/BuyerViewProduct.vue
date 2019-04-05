@@ -14,8 +14,9 @@
              Quantity Available: {{product.stock}}</p>
         </div>
         <div class="card-action">
-          <select class="browser-default" v-model="selectedQty">
-            <option value="" disabled selected>Select quantity</option>
+          <label>Select Quantity</label>
+          <select class="browser-default" v-model="selectedQty[p]">
+            <!-- <option value="" disabled selected>Select quantity</option> -->
             <option value="1">1</option>
             <option value="2">2</option>
             <option value="3">3</option>
@@ -25,7 +26,7 @@
           <input v-model="desiredPrice[p]" placeholder="Desired Delivery Price ($)">
           <br>
           <!--To replace correct onclick function -->
-          <button class="btn waves-effect waves-light" v-on:click="submitOrder(product.price, product.stock, product.Id, selectedQty, desiredPrice[p])">Submit Order</button>
+          <button class="btn waves-effect waves-light" v-on:click="submitOrder(product.price, product.stock, product.Id, selectedQty[p], desiredPrice[p])">Submit Order</button>
         </div>
       </div>
     </div>
@@ -41,7 +42,7 @@ export default {
   data () {
     return {
       products: {},
-      selectedQty:'',
+      selectedQty:{},
       desiredPrice: {},
       buyer:[],
       wallet:[]
