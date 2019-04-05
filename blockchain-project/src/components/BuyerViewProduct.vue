@@ -17,9 +17,7 @@
           <label>Select Quantity</label>
           <select class="browser-default" v-model="selectedQty[p]">
             <!-- <option value="" disabled selected>Select quantity</option> -->
-            <option value="1">1</option>
-            <option value="2">2</option>
-            <option value="3">3</option>
+            <option v-for="(item, index) in product.stock"> {{item}} </option>
           </select>
           <!-- <a href="#">This is a link</a> -->
           <br>
