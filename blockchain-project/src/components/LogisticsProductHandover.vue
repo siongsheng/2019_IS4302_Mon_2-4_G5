@@ -136,6 +136,7 @@ export default {
         "order": order
       }).then((response) => {
         alert("success");
+        this.$router.push('/logisticsDeliveryRequestStatus');
       })
       .catch((e) => {
         alert("Handover has been done already!");

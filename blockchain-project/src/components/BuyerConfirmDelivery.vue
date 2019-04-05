@@ -81,6 +81,7 @@ export default {
         "order": order
       }).then((response) => {
         alert("success");
+        this.$router.push('/buyerDeliveryStatus');
       })
       .catch((e) => {
         alert("Order has been delivered already");

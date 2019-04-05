@@ -37,6 +37,7 @@ export default {
         "logisticsRequest": logReq
       }).then((response) => {
         alert("success");
+        this.$router.go({path: this.$router.path});
       })
       .catch((e) => {
         alert("This request is closed!");

@@ -51,7 +51,7 @@ export default {
         "remark": remark.value
       }).then((response) => {
         alert("success");
-        this.$router.push('/logisticsDeliveryRequestStatus')
+        this.$router.push('/logisticsDeliveryRequestStatus');
       })
       .catch((e) => {
         alert("Bid is more than desired price!");

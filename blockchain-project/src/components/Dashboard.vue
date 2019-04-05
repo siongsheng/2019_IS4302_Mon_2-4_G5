@@ -40,26 +40,6 @@
     </div>
     <!-- user dashboard -->
     <div v-else id="user-dashboard">
-      <!-- <h5 class="header">Welcome back, {{this.userEmail}}</h5> -->
-      <!-- <div v-if="isBuyer" id="buyer-dashboard">
-        <h5 class="header">Welcome back, buyer1</h5>
-        <h6>View <a href="#/buyerViewProduct"> products </a> to begin</h6>
-      </div>
-
-      <div v-if="isSeller" id="seller-dashboard">
-        <h5 class="header">Welcome back, seller1</h5>
-        <h6>View <a href="#/sellerDeliveryRequest"> delivery request status </a> to begin</h6>
-      </div>
-
-      <div v-if="isLogs1" id="logs-dashboard">
-        <h5 class="header">Welcome back, logs1</h5>
-        <h6>Place<a href="#/logisticsPlaceBid"> delivery bid </a> to begin</h6>
-      </div>
-
-      <div v-if="isLogs2" id="logs-dashboard">
-        <h5 class="header">Welcome back, logs2</h5>
-        <h6>Place<a href="#/logisticsPlaceBid"> delivery bid </a> to begin</h6>
-      </div> -->
       <h3>Your wallet has ${{this.wallet[0].balance}}</h3>
 
       <div class="row">
@@ -67,11 +47,7 @@
           <label>User ID: {{user_id}}</label>
         </div>
       </div>
-      <!-- <div class="row">
-        <div class="input-field col s12">
-          <label>Wallet ID: {{}}</label>
-        </div>
-      </div> -->
+
       <br/>
       <div class="row">
       <div class="col s6">
@@ -83,7 +59,6 @@
               </div>
             </div>
             <button type="submit" class="btn" v-on:click="submitTopUp(topup)">Submit</button>
-            <router-link to="/" class="btn grey">Cancel</router-link>
         </div>
       </div>
 
@@ -96,7 +71,6 @@
               </div>
             </div>
             <button type="submit" class="btn" v-on:click="submitWithdraw(withdraw)">Submit</button>
-            <router-link to="/" class="btn grey">Cancel</router-link>
         </div>
       </div>
     </div>
