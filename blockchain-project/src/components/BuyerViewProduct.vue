@@ -44,7 +44,6 @@ export default {
       selectedQty:'',
       desiredPrice: {},
       buyer:[],
-      //port: '',
       wallet:[]
     }
   },

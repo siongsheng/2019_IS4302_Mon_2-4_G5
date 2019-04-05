@@ -49,8 +49,7 @@ export default {
       prodNames: [],
       sellers:[],
       sellerNames:[],
-      sellerContacts:[],
-      port: ''
+      sellerContacts:[]
     }
   },
   methods:{
@@ -85,7 +84,6 @@ export default {
       for(var k=0; k<this.products.length; k++){
         axios.get('http://localhost:3000/' + firebase.auth().currentUser.email + '/product/' + this.products[k].substring(42))
         .then((response) => {
-          //console.log(response.data.name);
           this.prodNames.push(response.data.results.name);
           this.sellers.push(response.data.results.seller);
         })
@@ -96,9 +94,10 @@ export default {
     },
     getSellerNames(){
       for(var k=0; k<this.sellers.length; k++){
+        //console.log(this.sellers[k].substring(41))
         axios.get('http://localhost:3000/' + firebase.auth().currentUser.email + '/seller/' + this.sellers[k].substring(41))
         .then((response) => {
-          //console.log(response.data.name);
+          //console.log(response.data.results);
           this.sellerNames.push(response.data.results.name);
           this.sellerContacts.push(response.data.results.contactNum)
         })

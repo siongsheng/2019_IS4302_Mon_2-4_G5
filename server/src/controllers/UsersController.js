@@ -17,7 +17,7 @@ module.exports = {
 		}
 	},
 
-	async seller (req, res) {
+	async sellers (req, res) {
 		try {
 			let result = await axios.get(`${req.composerAddress}:${req.port}${req.namespace}Seller`)
 
@@ -33,9 +33,41 @@ module.exports = {
 		}
 	},
 
-	async logistics (req, res) {
+	async seller (req, res) {
+		try {
+			let result = await axios.get(`${req.composerAddress}:${req.port}${req.namespace}Seller/${req.body.seller_id}`)
+
+			res.send({
+				message: 'success',
+				results: result.data
+			})
+		} catch (err) {
+			res.status(err.response.data.error.statusCode).send({
+				error: err.toString(),
+				message: err.response.data.error.message
+			})
+		}
+	},
+
+	async logisticss (req, res) {
 		try {
 			let result = await axios.get(`${req.composerAddress}:${req.port}${req.namespace}Logistics`)
+
+			res.send({
+				message: 'success',
+				results: result.data
+			})
+		} catch (err) {
+			res.status(err.response.data.error.statusCode).send({
+				error: err.toString(),
+				message: err.response.data.error.message
+			})
+		}
+	},
+
+	async logistics (req, res) {
+		try {
+			let result = await axios.get(`${req.composerAddress}:${req.port}${req.namespace}Logistics/${req.body.logs_id}`)
 
 			res.send({
 				message: 'success',

@@ -18,7 +18,7 @@
             <li v-if="isBuyer" class="tab"><a href="#/buyerViewProduct">Products</a></li>
             <li v-if="isBuyer" class="tab"><a href="#/buyerDeliveryRequest">Delivery Request</a></li>
             <li v-if="isBuyer" class="tab"><a href="#/buyerDeliveryStatus">Delivery Status</a></li>
-            <li v-if="isBuyer" class="tab"><a href="#/buyerConfirmDeliveryx">Confirm Delivery</a></li>
+            <li v-if="isBuyer" class="tab"><a href="#/buyerConfirmDelivery">Confirm Delivery</a></li>
 
             <li v-if="isLogs" class="tab"><a href="#/logisticsDeliveryRequest">Bid Delivery</a></li>
             <li v-if="isLogs" class="tab"><a href="#/logisticsDeliveryRequestStatus">Delivery Request Status</a></li>

@@ -4,7 +4,7 @@
     <div class="row">
         <div class="row">
           <div class="input-field col s12">
-            <label>Logistics ID: {{logistics.Id}}</label>
+            <label>Logistics ID: {{logistics_id}}</label>
           </div>
         </div>
         <div class="row">
@@ -34,15 +34,14 @@ export default {
   data () {
     return {
       logReq: {},
-      logistics:{},
-      port: '',
+      logistics_id:'',
       bid:'',
       remark:''
     }
   },
   methods:{
     submitBid(bid){
-      let logs = "org.deliverlor.ecommerce.Logistics#" + this.logistics.Id;
+      let logs = "org.deliverlor.ecommerce.Logistics#" + this.logistics_id;
       let logReq = "org.deliverlor.ecommerce.LogisticsRequest#" + this.$route.params.logReq_id;
 
       axios.post('http://localhost:3000/' + firebase.auth().currentUser.email + '/offerTx', {
@@ -54,28 +53,25 @@ export default {
         alert("success");
       })
       .catch((e) => {
+        alert("Bid is more than desired price!");
         console.error(e)
       })
 
     }
   },
   mounted(){
-    var self = this;
+    var userEmail = firebase.auth().currentUser.email;
     axios.get('http://localhost:3000/' + firebase.auth().currentUser.email + '/logisticsrequest/'  + this.$route.params.logReq_id)
     .then((response) => {
       this.logReq = response.data.results;
     })
-    .catch(error => {
-      console.log(error);
-    })
-    axios.get('http://localhost:3000/' +  firebase.auth().currentUser.email + '/logistics')
     .then((response) => {
-      //console.log(response.data.logs[0]);
-      this.logistics = response.data.results.logs[0];
+      this.logistics_id = userEmail.substring(0, userEmail.length - 9)
     })
     .catch(error => {
       console.log(error);
     })
+
 
   }
 }

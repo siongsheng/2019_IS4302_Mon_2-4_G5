@@ -3,12 +3,14 @@
     <ul class="collection with-header">
       <li class="collection-header"><h4>Delivery Requests</h4></li>
       <li class="collection-item avatar" v-for="(order, ord) in orders">
-      <img src="../assets/bag.jpg" alt="" class="circle">
+      <img src="../assets/product.png" alt="" class="circle">
       <span class="title">Order ID: {{order.Id}}</span>
       <br>
       <span class="product">Product: {{prodNames[ord]}}</span>
       <br>
-      <span class="deliveryState">Delivery State: {{order.orderState}}</span>
+      <!-- <span class="deliveryState">Delivery State: {{order.orderState}}</span>
+      <br> -->
+      <span class="logReqState">Logistics Request Status: {{logReqs[ord].state}}</span>
       <!-- <p>Product:  <br>
          Delivery State: {{order.orderState}}
       </p> -->
@@ -42,7 +44,7 @@ export default {
       orders: {},
       products: [],
       prodNames: [],
-      port: ''
+      logReqs:[]
     }
   },
   methods:{
@@ -71,6 +73,18 @@ export default {
           console.log(error);
         })
       }
+    },
+
+    getLogReqs(){
+      axios.get('http://localhost:3000/' + firebase.auth().currentUser.email + '/logisticsrequest')
+      .then((response) => {
+        this.logReqs = response.data.results;
+      })
+      .catch(error => {
+        console.log(error);
+      })
+
+
     }
   },
   mounted(){
@@ -81,6 +95,9 @@ export default {
     })
     .then((response) => {
       this.getProdNames();
+    })
+    .then((response) => {
+      this.getLogReqs();
     })
     .catch(error => {
       console.log(error);

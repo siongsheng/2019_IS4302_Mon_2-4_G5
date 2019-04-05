@@ -3,8 +3,19 @@ const OrderController = require('./controllers/OrderController')
 
 module.exports = (router) => {
 	router.get('/:user/buyer', UsersController.buyer)
-	router.get('/:user/seller', UsersController.seller)
-	router.get('/:user/logistics', UsersController.logistics)
+	router.get('/:user/seller', UsersController.sellers)
+	router.get('/:user/seller/:seller_id', UsersController.seller)
+	router.param('seller_id', function(req, res, next, seller_id) {
+		req.body.seller_id = seller_id
+		next();
+	});
+	router.get('/:user/logistics', UsersController.logisticss)
+	router.get('/:user/logistics/:logs_id', UsersController.logistics)
+	router.param('logs_id', function(req, res, next, logs_id) {
+		req.body.logs_id = logs_id
+		next();
+	});
+
 	router.route('/:user/wallet')
 		.get(UsersController.getWallet)
 		.post(UsersController.postWallet)
