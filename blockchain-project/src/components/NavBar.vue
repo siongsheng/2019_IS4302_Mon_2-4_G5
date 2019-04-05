@@ -5,6 +5,7 @@
         <router-link to="/" class="brand-logo">DeliverLor</router-link>
         <img :src="image" style="width:3em; height:2em; margin-left:160px; margin-top:18px;">
         <ul class="right">
+          <li v-if="isLoggedIn" class="header">Welcome back, {{this.currentUser}}</li>
           <li v-if="isLoggedIn"><router-link to="/">Dashboard</router-link></li>
           <!-- <li v-if="!isLoggedIn"><router-link to="/login">Login</router-link></li> -->
           <li v-if="isLoggedIn">

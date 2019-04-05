@@ -40,7 +40,7 @@
     </div>
     <!-- user dashboard -->
     <div v-else id="user-dashboard">
-      <h5 class="header">Welcome back, {{this.userEmail}}</h5>
+      <!-- <h5 class="header">Welcome back, {{this.userEmail}}</h5> -->
       <!-- <div v-if="isBuyer" id="buyer-dashboard">
         <h5 class="header">Welcome back, buyer1</h5>
         <h6>View <a href="#/buyerViewProduct"> products </a> to begin</h6>
@@ -61,6 +61,46 @@
         <h6>Place<a href="#/logisticsPlaceBid"> delivery bid </a> to begin</h6>
       </div> -->
       <h3>Your wallet has ${{this.wallet[0].balance}}</h3>
+
+      <div class="row">
+        <div class="input-field col s12">
+          <label>User ID: {{user_id}}</label>
+        </div>
+      </div>
+      <!-- <div class="row">
+        <div class="input-field col s12">
+          <label>Wallet ID: {{}}</label>
+        </div>
+      </div> -->
+      <br/>
+      <div class="row">
+      <div class="col s6">
+        <h5>Top Up Wallet</h5>
+        <div class="row">
+            <div class="row">
+              <div class="input-field col s6">
+                <input type="text" placeholder="Enter top up amount ($)" id="topup_amount" v-model="topup" required>
+              </div>
+            </div>
+            <button type="submit" class="btn" v-on:click="submitTopUp(topup)">Submit</button>
+            <router-link to="/" class="btn grey">Cancel</router-link>
+        </div>
+      </div>
+
+      <div class="col s6">
+        <h5>Withdraw Wallet Funds</h5>
+        <div class="row">
+            <div class="row">
+              <div class="input-field col s6">
+                <input type="text" placeholder="Enter withdraw amount ($)" id="withdraw_amount" v-model="withdraw" required>
+              </div>
+            </div>
+            <button type="submit" class="btn" v-on:click="submitWithdraw(withdraw)">Submit</button>
+            <router-link to="/" class="btn grey">Cancel</router-link>
+        </div>
+      </div>
+    </div>
+
     </div>
 
   </div>
@@ -80,7 +120,10 @@ export default {
       isBuyer: false,
       isSeller: false,
       isLogs1: false,
-      isLogs2: false
+      isLogs2: false,
+      user_id: '',
+      topup: '',
+      withdraw: ''
     }
   },
   created () {
@@ -123,7 +166,38 @@ export default {
       }
     }
   },
+  methods:{
+    submitTopUp(topup){
+      axios.post('http://localhost:3000/' + firebase.auth().currentUser.email + '/wallet', {
+        "amount": topup
+      }).then((response) => {
+        alert("success");
+        this.$router.go({path: this.$router.path});
+      })
+      .catch((e) => {
+        alert("Failed!");
+        console.error(e)
+      })
+
+    },
+    submitWithdraw(withdraw){
+      let withdraw_amount = -withdraw;
+      axios.post('http://localhost:3000/' + firebase.auth().currentUser.email + '/wallet', {
+        "amount": withdraw_amount
+      }).then((response) => {
+        alert("success");
+        this.$router.go({path: this.$router.path});
+      })
+      .catch((e) => {
+        alert("Failed!");
+        console.error(e)
+      })
+
+    }
+  },
   mounted(){
+    this.user_id = firebase.auth().currentUser.email.substring(0, firebase.auth().currentUser.email.length - 9);
+
     axios.get('http://localhost:3000/' + firebase.auth().currentUser.email + '/Wallet')
     .then((response) => {
       //console.log(response.data.wallet);

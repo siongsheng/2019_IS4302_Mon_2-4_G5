@@ -5,7 +5,7 @@
     <div class="col s4" v-for="(product, p) in products">
       <div class="card">
         <div class="card-image">
-          <img src="../assets/bag.jpg">
+          <img src="../assets/shopping-bag.png">
         </div>
         <div class="card-content">
           <span class="card-title">{{product.name}}</span>
@@ -64,6 +64,7 @@ export default {
           "product": prod
         }).then((response) => {
           alert("success");
+          this.$router.go({path: this.$router.path});
         })
         .catch((e) => {
           console.error(e)
