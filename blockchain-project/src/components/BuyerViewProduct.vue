@@ -64,7 +64,8 @@ export default {
           "product": prod
         }).then((response) => {
           alert("success");
-          this.$router.go({path: this.$router.path});
+          //this.$router.go({path: this.$router.path});
+          this.$router.push('/')
         })
         .catch((e) => {
           console.error(e)

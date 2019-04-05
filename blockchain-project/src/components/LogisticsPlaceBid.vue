@@ -21,7 +21,7 @@
           </div>
         </div>
         <button type="submit" class="btn" v-on:click="submitBid(bid)">Submit</button>
-        <router-link to="/" class="btn grey">Cancel</router-link>
+        <router-link to="/logisticsDeliveryRequest" class="btn grey">Cancel</router-link>
     </div>
   </div>
 </template>
@@ -48,9 +48,10 @@ export default {
         "offerPrice": bid,
         "logistics": logs,
         "logisticsRequest": logReq,
-        "remark": remark.value()
+        "remark": remark.value
       }).then((response) => {
         alert("success");
+        this.$router.push('/logisticsDeliveryRequestStatus')
       })
       .catch((e) => {
         alert("Bid is more than desired price!");
