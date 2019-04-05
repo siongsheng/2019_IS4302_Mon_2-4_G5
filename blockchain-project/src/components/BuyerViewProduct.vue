@@ -50,6 +50,10 @@ export default {
   },
   methods:{
     submitOrder(price, stock, prodId, qty, delPrice){
+      if (!delPrice){
+        alert("please enter delivery price")
+        return
+      }
       let buyer = "org.deliverlor.ecommerce.Buyer#" + this.buyer.Id;
       let prod = "org.deliverlor.ecommerce.Product#" + prodId;
 
