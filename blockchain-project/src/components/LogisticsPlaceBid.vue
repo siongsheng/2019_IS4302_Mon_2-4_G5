@@ -48,7 +48,7 @@ export default {
         "offerPrice": bid,
         "logistics": logs,
         "logisticsRequest": logReq,
-        "remark": remark
+        "remark": remark.value()
       }).then((response) => {
         alert("success");
       })

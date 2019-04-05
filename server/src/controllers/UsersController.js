@@ -1,9 +1,25 @@
 var axios = require('axios')
 
 module.exports = {
-	async buyer (req, res, next) {
+	async buyers (req, res, next) {
 		try {
 			let result = await axios.get(`${req.composerAddress}:${req.port}${req.namespace}Buyer`)
+
+			res.send({
+				message: 'success',
+				results: result.data
+			})
+		} catch (err) {
+			res.status(err.response.data.error.statusCode).send({
+				error: err.toString(),
+				message: err.response.data.error.message,
+			})
+		}
+	},
+
+	async buyer (req, res, next) {
+		try {
+			let result = await axios.get(`${req.composerAddress}:${req.port}${req.namespace}Buyer/${req.body.buyer_id}`)
 
 			res.send({
 				message: 'success',

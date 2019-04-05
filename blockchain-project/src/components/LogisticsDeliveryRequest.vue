@@ -63,7 +63,7 @@ export default {
         this.orders.push(this.logReqs[i].order);
       }
     },
-    getOrderQuantity(){
+    getOrderFields(){
       var buyer = 'buyer1@test.com'
       for(var j=0; j<this.orders.length; j++){
         console.log(this.orders[j].substring(40));
@@ -117,7 +117,7 @@ export default {
     })
     .then((response) => {
       this.getOrders();
-      this.getOrderQuantity();
+      this.getOrderFields();
       //this.getProductNames();
     })
     .then((response) => {
