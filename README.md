@@ -31,23 +31,6 @@ Populate assets
 }
 
 {
-  "$class": "org.deliverlor.ecommerce.Buyer",
-  "Id": "buyer2",
-  "name": "Laboris velit.",
-  "email": "buyer2@test.com",
-  "contactNum": "123",
-  "address": {
-    "$class": "org.deliverlor.ecommerce.Address",
-    "houseNo": "1",
-    "street": "Est id reprehenderit veniam labore.",
-    "county": "Sit.",
-    "postcode": "2",
-    "country": "Enim ut."
-  },
-  "wallet": "resource:org.deliverlor.ecommerce.Wallet#wallet2"
-}
-
-{
   "$class": "org.deliverlor.ecommerce.Logistics",
   "Id": "logs1",
   "name": "UPS",
@@ -61,7 +44,7 @@ Populate assets
     "postcode": "123456",
     "country": "Singapore"
   },
-  "wallet": "resource:org.deliverlor.ecommerce.Wallet#wallet3"
+  "wallet": "resource:org.deliverlor.ecommerce.Wallet#wallet2"
 }
 
 {
@@ -78,7 +61,7 @@ Populate assets
     "postcode": "654321",
     "country": "Singapore"
   },
-  "wallet": "resource:org.deliverlor.ecommerce.Wallet#wallet4"
+  "wallet": "resource:org.deliverlor.ecommerce.Wallet#wallet3"
 }
 
 {
@@ -95,24 +78,7 @@ Populate assets
     "postcode": "888888",
     "country": "Singapore"
   },
-  "wallet": "resource:org.deliverlor.ecommerce.Wallet#wallet5"
-}
-
-{
-  "$class": "org.deliverlor.ecommerce.Seller",
-  "Id": "seller2",
-  "name": "Consectetur Lorem irure.",
-  "email": "seller2@email.com",
-  "contactNum": "2123",
-  "address": {
-    "$class": "org.deliverlor.ecommerce.Address",
-    "houseNo": "1",
-    "street": "Aute.",
-    "county": "Nulla.",
-    "postcode": "12",
-    "country": "Amet Lorem."
-  },
-  "wallet": "resource:org.deliverlor.ecommerce.Wallet#wallet6"
+  "wallet": "resource:org.deliverlor.ecommerce.Wallet#wallet4"
 }
 
 {
@@ -141,8 +107,8 @@ Populate assets
   "balance": 100,
   "ccNumber": "1",
   "expireMonth": 10,
-  "expireYear": 2120,
-  "owner": "resource:org.deliverlor.ecommerce.Buyer#buyer2"
+  "expireYear": 12120,
+  "owner": "resource:org.deliverlor.ecommerce.Logistics#logs1"
 }
 
 {
@@ -152,7 +118,7 @@ Populate assets
   "ccNumber": "1",
   "expireMonth": 10,
   "expireYear": 12120,
-  "owner": "resource:org.deliverlor.ecommerce.Logistics#logs1"
+  "owner": "resource:org.deliverlor.ecommerce.Logistics#logs2"
 }
 
 {
@@ -161,29 +127,10 @@ Populate assets
   "balance": 100,
   "ccNumber": "1",
   "expireMonth": 10,
-  "expireYear": 12120,
-  "owner": "resource:org.deliverlor.ecommerce.Logistics#logs2"
-}
-
-{
-  "$class": "org.deliverlor.ecommerce.Wallet",
-  "Id": "wallet5",
-  "balance": 100,
-  "ccNumber": "1",
-  "expireMonth": 10,
   "expireYear": 2120,
   "owner": "resource:org.deliverlor.ecommerce.Seller#seller1"
 }
 
-{
-  "$class": "org.deliverlor.ecommerce.Wallet",
-  "Id": "wallet6",
-  "balance": 100,
-  "ccNumber": "1",
-  "expireMonth": 10,
-  "expireYear": 2112,
-  "owner": "resource:org.deliverlor.ecommerce.Seller#seller2"
-}
 ```
 
 * Issue new IDs for the participants in the ID registry
@@ -203,4 +150,14 @@ Middleware
 * Navigate to server/src/ and start the Express.js server with `node server.js`
 
 Frontend
-* 
+* Navigate to the blockchain-project folder and start the Vue project with `npm run dev`
+* Login with the following emails and password
+
+```
+Buyer 1 : buyer1@test.com
+Seller 1 : seller1@test.com
+Logistics 1 : logs1@test.com
+Logistics 2 : logs2@test.com
+
+Password for all : 123456
+```
