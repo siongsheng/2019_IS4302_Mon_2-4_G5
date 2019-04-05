@@ -12,6 +12,7 @@ import BuyerViewProduct from '@/components/BuyerViewProduct'
 import BuyerDeliveryStatus from '@/components/BuyerDeliveryStatus'
 import BuyerConfirmDelivery from '@/components/BuyerConfirmDelivery'
 import SellerDeliveryRequest from '@/components/SellerDeliveryRequest'
+import SellerViewProduct from '@/components/SellerViewProduct'
 import LogisticsDeliveryRequest from '@/components/LogisticsDeliveryRequest'
 import LogisticsPlaceBid from '@/components/LogisticsPlaceBid'
 import LogisticsDeliveryRequestStatus from '@/components/LogisticsDeliveryRequestStatus'
@@ -39,6 +40,14 @@ let router = new Router({
       path: '/buyerViewProduct',
       name: 'buyerViewProduct',
       component: BuyerViewProduct,
+      meta:{
+        requiresAuth: true
+      }
+    },
+    {
+      path: '/sellerViewProduct',
+      name: 'sellerViewProduct',
+      component: SellerViewProduct,
       meta:{
         requiresAuth: true
       }
