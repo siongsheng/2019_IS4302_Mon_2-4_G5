@@ -9,9 +9,10 @@
          Bid: $ {{offer.offerPrice}}
       </p>
       <!-- <a href="#!" class="secondary-content"><i class="material-icons">grade</i></a> -->
-      <a class="btn waves-effect waves-light" tag='button' v-on:click="acceptOffer(offer.logistics.substring(44))">Accept</a>
+      <a v-if="isOpen()" class="btn waves-effect waves-light" tag='button' v-on:click="acceptOffer(offer.logistics.substring(44))">Accept</a>
     </li>
     </ul>
+    <router-link v-if="nobid()" class="btn waves-effect waves-light" v-bind:to="{ name: 'buyerEditDeliveryRequest', params: { order: logReq.Id }}" tag="button">Edit Reserve Price</router-link>
   </div>
 </template>
 <script>
@@ -23,18 +24,32 @@ export default {
     return {
       offers: [],
       logNames:[],
-      logReqState:''
+      logReqState:'',
+      logReq: {}
     }
   },
   methods:{
-
+    //returns true if the log req is still open
+    isOpen(){
+      if(this.logReq.state == 'OPEN'){
+        return true
+      }
+      return false
+    },
+    //disable the edit button for user if there is already offer to
+    nobid(){
+      if (this.offers.length == 0){
+        return true;
+      }
+      return false;
+    },
     acceptOffer(deliverer){
       let logs = "org.deliverlor.ecommerce.Logistics#" + deliverer;
-      let logReq = "org.deliverlor.ecommerce.LogisticsRequest#" + this.$route.params.order_id;
+      this.logReq = "org.deliverlor.ecommerce.LogisticsRequest#" + this.$route.params.order_id;
 
       axios.post('http://localhost:3000/' + firebase.auth().currentUser.email + '/acceptOfferTx', {
         "confirmedDeliverer": logs,
-        "logisticsRequest": logReq
+        "logisticsRequest": this.logReq
       }).then((response) => {
         alert("success");
         this.$router.go({path: this.$router.path});
@@ -60,6 +75,7 @@ export default {
   mounted(){
     axios.get('http://localhost:3000/' + firebase.auth().currentUser.email + '/logisticsrequest/'  + this.$route.params.order_id)
     .then((response) => {
+      this.logReq=response.data.results;
       this.logReqState = response.data.results.state;
       this.offers = response.data.results.offers;
     })
