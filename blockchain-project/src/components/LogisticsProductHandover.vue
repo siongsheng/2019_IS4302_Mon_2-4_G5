@@ -72,10 +72,10 @@ export default {
       for(var j=0; j<this.orders.length; j++){
         console.log(this.orders[j].Id.substring(40));
         if(this.orders[j].orderState === 'AWAITING_LOGISTICS'){
-          this.orderQtys.push(this.orders[j].quantity);
-          this.products.push(this.orders[j].product);
           this.orderIds.push(this.orders[j].Id);
+          this.orderQtys.push(this.orders[j].quantity);
           this.buyers.push(this.orders[j].buyer);
+          this.products.push(this.orders[j].product);
         }
       }
     },
