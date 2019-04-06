@@ -23,6 +23,11 @@
             <input type="text" v-model="description" placeholder="Description" required>
           </div>
         </div>
+        <div class="row">
+          <div class="input-field col s12">
+            <input type="text" v-model="price" placeholder="Price" required>
+          </div>
+        </div>
         <button type="submit" class="btn">Submit</button>
         <router-link to="/sellerViewProduct" class="btn grey">Cancel</router-link>
       </form>
@@ -40,7 +45,8 @@ export default {
       name: null,
       stock: null,
       description: null,
-      product: null
+      product: null,
+      price:null
     }
   },
   beforeRouteEnter (to, from, next) {
@@ -54,13 +60,28 @@ export default {
             vm.name = product.name
             vm.stock = product.stock
             vm.description = product.description
+            vm.price = product.price
           })
         }
     )
   },
   methods: {
     updateProduct () { //TODO
-      alert("method not supported")
+      console.log("in updateProduct()")
+      alert("click OK and wait a little...")
+      axios.put(
+        'http://localhost:3000/' + firebase.auth().currentUser.email + '/product/' +this.product_id, 
+        {
+          "name": this.name,
+          "price": this.price,
+          "description": this.description,
+          "stock": this.stock,
+          "price": this.price
+        }).then((response)=>{
+        console.log(response)
+        alert("successfully updated")
+        this.$router.push({name: 'sellerViewProduct'})
+      })
     }
   },
   mounted(){
