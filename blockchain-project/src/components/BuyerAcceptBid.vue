@@ -9,7 +9,8 @@
         <img src="../assets/truck.png" alt="" class="circle">
       <span class="title">Logistics ID: {{offer.logistics.substring(44)}} </span>
       <p>Logistics Name: {{logNames[off]}}<br>
-         Bid: $ {{offer.offerPrice}}
+         Bid: $ {{offer.offerPrice}} <br>
+         Remark: {{offer.remark}}
       </p>
       <!-- <a href="#!" class="secondary-content"><i class="material-icons">grade</i></a> -->
       <a v-if="isOpen()" class="btn waves-effect waves-light" tag='button' v-on:click="acceptOffer(offer.logistics.substring(44))">Accept</a>

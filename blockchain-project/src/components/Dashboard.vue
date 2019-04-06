@@ -40,7 +40,7 @@
     </div>
     <!-- user dashboard -->
     <div v-else id="user-dashboard">
-      <h3>Your wallet has ${{this.wallet[0].balance}}</h3>
+      <h3>Your wallet has ${{Math.round(this.wallet[0].balance*100)/100}}</h3>
 
       <div class="row">
         <div class="input-field col s12">
