@@ -15,7 +15,7 @@
       <a v-if="isOpen()" class="btn waves-effect waves-light" tag='button' v-on:click="acceptOffer(offer.logistics.substring(44))">Accept</a>
     </li>
     </ul>
-    <router-link v-if="nobid()" class="btn waves-effect waves-light" v-bind:to="{ name: 'buyerEditDeliveryRequest', params: { order: logReq.Id }}" tag="button">Edit Reserve Price</router-link>
+    <router-link v-if="nobid()" class="btn waves-effect waves-light" v-bind:to="{ name: 'buyerEditDeliveryRequest', params: { logReq_id: logReq.Id }}" tag="button">Edit Reserve Price</router-link>
   </div>
 </template>
 <script>
