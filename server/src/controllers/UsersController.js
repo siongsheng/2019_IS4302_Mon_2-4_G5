@@ -1,62 +1,114 @@
 var axios = require('axios')
 
 module.exports = {
-	async buyer (req, res, next) {
+	async buyers (req, res, next) {
 		try {
-			let result = await axios.get(`http://localhost:${req.port}/api/org.deliverlor.ecommerce.Buyer`)
+			let result = await axios.get(`${req.composerAddress}:${req.port}${req.namespace}Buyer`)
 
 			res.send({
 				message: 'success',
-				buyers: result.data
+				results: result.data
 			})
 		} catch (err) {
-			res.status(400).send({
+			res.status(err.response.data.error.statusCode).send({
 				error: err.toString(),
+				message: err.response.data.error.message,
+			})
+		}
+	},
+
+	async buyer (req, res, next) {
+		try {
+			let result = await axios.get(`${req.composerAddress}:${req.port}${req.namespace}Buyer/${req.body.buyer_id}`)
+
+			res.send({
+				message: 'success',
+				results: result.data
+			})
+		} catch (err) {
+			res.status(err.response.data.error.statusCode).send({
+				error: err.toString(),
+				message: err.response.data.error.message,
+			})
+		}
+	},
+
+	async sellers (req, res) {
+		try {
+			let result = await axios.get(`${req.composerAddress}:${req.port}${req.namespace}Seller`)
+
+			res.send({
+				message: 'success',
+				results: result.data
+			})
+		} catch (err) {
+			res.status(err.response.data.error.statusCode).send({
+				error: err.toString(),
+				message: err.response.data.error.message
 			})
 		}
 	},
 
 	async seller (req, res) {
 		try {
-			let result = await axios.get(`http://localhost:${req.port}/api/org.deliverlor.ecommerce.Seller`)
+			let result = await axios.get(`${req.composerAddress}:${req.port}${req.namespace}Seller/${req.body.seller_id}`)
 
 			res.send({
 				message: 'success',
-				sellers: result.data
+				results: result.data
 			})
 		} catch (err) {
-			res.status(400).send({
-				error: err.toString()
+			res.status(err.response.data.error.statusCode).send({
+				error: err.toString(),
+				message: err.response.data.error.message
+			})
+		}
+	},
+
+	async logisticss (req, res) {
+		try {
+			let result = await axios.get(`${req.composerAddress}:${req.port}${req.namespace}Logistics`)
+
+			res.send({
+				message: 'success',
+				results: result.data
+			})
+		} catch (err) {
+			res.status(err.response.data.error.statusCode).send({
+				error: err.toString(),
+				message: err.response.data.error.message
 			})
 		}
 	},
 
 	async logistics (req, res) {
 		try {
-			let result = await axios.get(`http://localhost:${req.port}/api/org.deliverlor.ecommerce.Logistics`)
+			let result = await axios.get(`${req.composerAddress}:${req.port}${req.namespace}Logistics/${req.body.logs_id}`)
 
 			res.send({
 				message: 'success',
-				logs: result.data
+				results: result.data
 			})
 		} catch (err) {
-			res.status(400).send({
-				error: err.toString()
+			res.status(err.response.data.error.statusCode).send({
+				error: err.toString(),
+				message: err.response.data.error.message
 			})
 		}
 	},
 
 	async getWallet (req, res) {
 		try {
-			let result = await axios.get(`http://localhost:${req.port}/api/org.deliverlor.ecommerce.Wallet`)
+			let result = await axios.get(`${req.composerAddress}:${req.port}${req.namespace}Wallet`)
 
 			res.send({
 				message: 'success',
-				wallet: result.data
+				results: result.data
 			})
 		} catch (err) {
-			res.status(400).send({
-				error: err.toString()
+			res.status(err.response.data.error.statusCode).send({
+				error: err.toString(),
+				message: err.response.data.error.message
 			})
 		}
 	},
@@ -64,28 +116,28 @@ module.exports = {
 	async postWallet (req, res) {
 		try {
 			let tx, myself
-			if (req.query.amount > 0) {
+			if (req.body.amount > 0) {
 				tx = 'TopUpFundsTx'
 			} else {
-				req.query.amount = Math.abs(req.query.amount)
+				req.body.amount = Math.abs(req.body.amount)
 				tx = 'WithdrawFundsTx'
 			}
-			let user = await axios.get(`http://localhost:${req.port}/api/system/ping`)
+			let user = await axios.get(`${req.composerAddress}:${req.port}/api/system/ping`)
 			myself = user.data.participant
-			let result = await axios.post(`http://localhost:${req.port}/api/org.deliverlor.ecommerce.${tx}`,
+			let result = await axios.post(`${req.composerAddress}:${req.port}${req.namespace}${tx}`,
 										{
-											amount: req.query.amount,
+											amount: req.body.amount,
 											owner: myself
 										})
 
 			res.send({
 				message: 'success',
-				wallet: result.data
+				results: result.data
 			})
 		} catch (err) {
-			console.log(err)
-			res.status(400).send({
-				error: err.toString()
+			res.status(err.response.data.error.statusCode).send({
+				error: err.toString(),
+				message: err.response.data.error.message
 			})
 		}
 	}

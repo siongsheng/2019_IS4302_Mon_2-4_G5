@@ -5,6 +5,7 @@
         <router-link to="/" class="brand-logo">DeliverLor</router-link>
         <img :src="image" style="width:3em; height:2em; margin-left:160px; margin-top:18px;">
         <ul class="right">
+          <li v-if="isLoggedIn" class="header">Welcome back, {{this.currentUser}}</li>
           <li v-if="isLoggedIn"><router-link to="/">Dashboard</router-link></li>
           <!-- <li v-if="!isLoggedIn"><router-link to="/login">Login</router-link></li> -->
           <li v-if="isLoggedIn">
@@ -18,14 +19,14 @@
             <li v-if="isBuyer" class="tab"><a href="#/buyerViewProduct">Products</a></li>
             <li v-if="isBuyer" class="tab"><a href="#/buyerDeliveryRequest">Delivery Request</a></li>
             <li v-if="isBuyer" class="tab"><a href="#/buyerDeliveryStatus">Delivery Status</a></li>
-            <li v-if="isBuyer" class="tab"><a href="#/buyerConfirmDeliveryx">Confirm Delivery</a></li>
+            <li v-if="isBuyer" class="tab"><a href="#/buyerConfirmDelivery">Confirm Delivery</a></li>
 
             <li v-if="isLogs" class="tab"><a href="#/logisticsDeliveryRequest">Bid Delivery</a></li>
             <li v-if="isLogs" class="tab"><a href="#/logisticsDeliveryRequestStatus">Delivery Request Status</a></li>
             <li v-if="isLogs" class="tab"><a href="#/logisticsProductHandover">Product Handover</a></li>
 
             <li v-if="isSeller" class="tab"><a href="#/sellerDeliveryRequest">Delivery Status</a></li>
-
+            <li v-if="isSeller" class="tab"><a href="#/sellerViewProduct">View My Products</a></li>
           </ul>
         </div>
       </div>

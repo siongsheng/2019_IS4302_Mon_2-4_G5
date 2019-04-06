@@ -11,7 +11,10 @@ import BuyerAcceptBid from '@/components/BuyerAcceptBid'
 import BuyerViewProduct from '@/components/BuyerViewProduct'
 import BuyerDeliveryStatus from '@/components/BuyerDeliveryStatus'
 import BuyerConfirmDelivery from '@/components/BuyerConfirmDelivery'
+import BuyerEditDeliveryRequest from '@/components/BuyerEditDeliveryRequest'
 import SellerDeliveryRequest from '@/components/SellerDeliveryRequest'
+import SellerViewProduct from '@/components/SellerViewProduct'
+import SellerEditProduct from '@/components/SellerEditProduct'
 import LogisticsDeliveryRequest from '@/components/LogisticsDeliveryRequest'
 import LogisticsPlaceBid from '@/components/LogisticsPlaceBid'
 import LogisticsDeliveryRequestStatus from '@/components/LogisticsDeliveryRequestStatus'
@@ -42,7 +45,7 @@ let router = new Router({
       meta:{
         requiresAuth: true
       }
-    },
+    },    
     {
       path: '/buyerDeliveryRequest',
       name: 'buyerDeliveryRequest',
@@ -52,7 +55,7 @@ let router = new Router({
       }
     },
     {
-      path: '/buyerAcceptBid',
+      path: '/buyerAcceptBid/:order_id',
       name: 'buyerAcceptBid',
       component: BuyerAcceptBid,
       meta:{
@@ -84,6 +87,30 @@ let router = new Router({
       }
     },
     {
+      path:'/buyerEditDeliveryRequest/:logReq_id',
+      name: 'buyerEditDeliveryRequest',
+      component: BuyerEditDeliveryRequest,
+      meta:{
+        requiresAuth: true
+      }
+    },
+    {
+      path: '/sellerViewProduct',
+      name: 'sellerViewProduct',
+      component: SellerViewProduct,
+      meta:{
+        requiresAuth: true
+      }
+    },
+    {
+      path: '/sellerEditProduct/:product_id',
+      name: 'sellerEditProduct',
+      component: SellerEditProduct,
+      meta:{
+        requiresAuth: true
+      }
+    },
+    {
       path: '/logisticsDeliveryRequest',
       name: 'logisticsDeliveryRequest',
       component: LogisticsDeliveryRequest,
@@ -92,7 +119,7 @@ let router = new Router({
       }
     },
     {
-      path: '/logisticsPlaceBid',
+      path: '/logisticsPlaceBid/:logReq_id',
       name: 'logisticsPlaceBid',
       component: LogisticsPlaceBid,
       meta:{
