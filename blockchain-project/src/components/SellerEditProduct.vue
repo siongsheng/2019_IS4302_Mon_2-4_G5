@@ -60,7 +60,21 @@ export default {
   },
   methods: {
     updateProduct () { //TODO
-      alert("method not supported")
+      console.log("in updateProduct()")
+      console.log("stock: "+this.stock)
+      alert("click OK and wait a little...")
+      axios.put(
+        'http://localhost:3000/' + firebase.auth().currentUser.email + '/product/' +this.product_id, 
+        {
+          "name": this.name,
+          "price": this.price,
+          "description": this.description,
+          "stock": this.stock 
+        }).then((response)=>{
+        console.log(response)
+        alert("successfully updated")
+        this.$router.push({name: 'sellerViewProduct'})
+      })
     }
   },
   mounted(){
