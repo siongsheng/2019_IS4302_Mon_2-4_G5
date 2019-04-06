@@ -2,7 +2,12 @@ const UsersController = require('./controllers/UsersController')
 const OrderController = require('./controllers/OrderController')
 
 module.exports = (router) => {
-	router.get('/:user/buyer', UsersController.buyer)
+	router.get('/:user/buyer', UsersController.buyers)
+	router.get('/:user/buyer/:buyer_id', UsersController.buyer)
+	router.param('buyer_id', function(req, res, next, buyer_id) {
+		req.body.buyer_id = buyer_id
+		next()
+	})
 	router.get('/:user/seller', UsersController.sellers)
 	router.get('/:user/seller/:seller_id', UsersController.seller)
 	router.param('seller_id', function(req, res, next, seller_id) {

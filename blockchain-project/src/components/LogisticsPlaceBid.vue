@@ -44,7 +44,7 @@ export default {
       let logs = "org.deliverlor.ecommerce.Logistics#" + this.logistics_id;
       let logReq = "org.deliverlor.ecommerce.LogisticsRequest#" + this.$route.params.logReq_id;
 
-      axios.post('http://localhost:3000/' + firebase.auth().currentUser.email + '/offerTx', {
+      axios.put('http://localhost:3000/' + firebase.auth().currentUser.email + '/offerTx', {
         "offerPrice": bid,
         "logistics": logs,
         "logisticsRequest": logReq,

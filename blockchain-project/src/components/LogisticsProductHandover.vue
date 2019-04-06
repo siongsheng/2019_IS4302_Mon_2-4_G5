@@ -42,7 +42,7 @@ export default {
   name: 'LogisticsProductHandover',
   data () {
     return {
-      logReqs: {},
+      //logReqs: {},
       orders: [],
       orderIds:[],
       orderQtys: [],
@@ -57,33 +57,26 @@ export default {
     }
   },
   methods:{
-    getOrders(){
-      var userEmail = firebase.auth().currentUser.email;
-      var logs = userEmail.substring(0, userEmail.length - 9);
-
-      for(var i=0; i<this.logReqs.length; i++){
-        //console.log(this.logReqs[i])
-        if(this.logReqs[i].confirmedDeliverer && this.logReqs[i].confirmedDeliverer.substring(44) === logs){
-          this.orders.push(this.logReqs[i].order);
-        }
-      }
-    },
+    // getOrders(){
+    //   var userEmail = firebase.auth().currentUser.email;
+    //   var logs = userEmail.substring(0, userEmail.length - 9);
+    //
+    //   for(var i=0; i<this.logReqs.length; i++){
+    //     //console.log(this.logReqs[i])
+    //     if(this.logReqs[i].confirmedDeliverer && this.logReqs[i].confirmedDeliverer.substring(44) === logs){
+    //       this.orders.push(this.logReqs[i].order);
+    //     }
+    //   }
+    // },
     getOrderFields(){
-      var buyer = 'buyer1@test.com'
       for(var j=0; j<this.orders.length; j++){
-        console.log(this.orders[j].substring(40));
-        axios.get('http://localhost:3000/' + buyer +  '/order/' + this.orders[j].substring(40))
-        .then((response) => {
-          if(response.data.results.orderState === 'AWAITING_LOGISTICS'){
-            this.orderQtys.push(response.data.results.quantity);
-            this.products.push(response.data.results.product);
-            this.orderIds.push(response.data.results.Id);
-            this.buyers.push(response.data.results.buyer);
-          }
-        })
-        .catch(error => {
-          console.log(error);
-        })
+        console.log(this.orders[j].Id.substring(40));
+        if(this.orders[j].orderState === 'AWAITING_LOGISTICS'){
+          this.orderQtys.push(this.orders[j].quantity);
+          this.products.push(this.orders[j].product);
+          this.orderIds.push(this.orders[j].Id);
+          this.buyers.push(this.orders[j].buyer);
+        }
       }
     },
     getBuyerNames(){
@@ -136,7 +129,7 @@ export default {
         "order": order
       }).then((response) => {
         alert("success");
-        this.$router.push('/logisticsDeliveryRequestStatus');
+        this.$router.push('/logisticsProductHandover');
       })
       .catch((e) => {
         alert("Handover has been done already!");
@@ -147,13 +140,12 @@ export default {
   },
   mounted(){
     var self = this;
-    axios.get('http://localhost:3000/' + firebase.auth().currentUser.email + '/logisticsrequest')
+    axios.get('http://localhost:3000/' + firebase.auth().currentUser.email + '/order')
     .then((response) => {
       //console.log(response.data.results);
-      this.logReqs = response.data.results;
+      this.orders = response.data.results;
     })
     .then((response) => {
-      this.getOrders();
       this.getOrderFields();
     })
     .then((response) => {

@@ -11,7 +11,6 @@
               <th>Reserve amount</th>
               <th>Bid Placed</th>
               <th>Bid Status</th>
-              <th>Delivery Status</th>
           </tr>
         </thead>
 
@@ -25,7 +24,6 @@
             <td>$ {{logReq.desiredPrice}}</td>
             <td>$ {{offerPrices[log]}}</td>
             <td>{{bidStates[log]}}</td>
-            <td>{{orderStates[log]}}</td>
           </tr>
 
         </tbody>
@@ -42,9 +40,7 @@ export default {
   data () {
     return {
       logReqs: {},
-      orders: [],
       orderQtys: [],
-      orderStates:[],
       products: [],
       prodNames: [],
       sellers:[],
@@ -57,26 +53,26 @@ export default {
   methods:{
     getOrders(){
       for(var i=0; i<this.logReqs.length; i++){
-        this.orders.push(this.logReqs[i].order);
+        this.orderQtys.push(this.logReqs[i].quantity);
+        this.products.push(this.logReqs[i].product);
       }
     },
-    getOrderFields(){
-      var buyer = 'buyer1@test.com'
-      for(var j=0; j<this.orders.length; j++){
-        console.log(this.orders[j].substring(40));
-        axios.get('http://localhost:3000/' + buyer +  '/order/' + this.orders[j].substring(40))
-        .then((response) => {
-          //console.log(response.data.quantity);
-          this.orderQtys.push(response.data.results.quantity);
-          this.orderStates.push(response.data.results.orderState);
-          this.products.push(response.data.results.product);
-          //console.log("it is a:" + this.products.length)
-        })
-        .catch(error => {
-          console.log(error);
-        })
-      }
-    },
+    // getOrderFields(){
+    //   var buyer = 'buyer1@test.com'
+    //   for(var j=0; j<this.orders.length; j++){
+    //     console.log(this.orders[j].substring(40));
+    //     axios.get('http://localhost:3000/' + buyer +  '/order/' + this.orders[j].substring(40))
+    //     .then((response) => {
+    //       //console.log(response.data.quantity);
+    //       this.orderQtys.push(response.data.results.quantity);
+    //       this.products.push(response.data.results.product);
+    //       //console.log("it is a:" + this.products.length)
+    //     })
+    //     .catch(error => {
+    //       console.log(error);
+    //     })
+    //   }
+    // },
     getProductNames(){
       for(var k=0; k<this.products.length; k++){
         axios.get('http://localhost:3000/' + firebase.auth().currentUser.email + '/product/' + this.products[k].substring(42))
@@ -148,7 +144,6 @@ export default {
     })
     .then((response) => {
       this.getOrders();
-      this.getOrderFields();
       this.getOffers();
     })
     .then((response) => {
