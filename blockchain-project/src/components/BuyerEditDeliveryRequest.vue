@@ -31,12 +31,12 @@ export default {
     }
   },
   beforeRouteEnter (to, from, next) {
-    console.log("in buyerEditDeliveryRequest.beforeRouteEnter()")
+    // console.log("in buyerEditDeliveryRequest.beforeRouteEnter()")
     next(vm => {
           vm.logReq_id =to.params.logReq_id
-          // console.log(vm.logReq_id)
+          // // console.log(vm.logReq_id)
           axios.get('http://localhost:3000/' + firebase.auth().currentUser.email + '/logisticsrequest/' +to.params.logReq_id).then((response) => {
-            // console.log("logistics request  before updating"+response.data.results)
+            // // console.log("logistics request  before updating"+response.data.results)
             var logReq = response.data.results
             vm.price = logReq.desiredPrice
           })
@@ -45,24 +45,39 @@ export default {
   },
   methods: {
     updateLogReqPrice () { //TODO: @Anu test this method
-      console.log("in updateLogReqPrice()")
-      console.log("price: "+this.price)
+      // console.log("in updateLogReqPrice()")
+      // console.log("price: "+this.price)
       alert("click OK and wait a little...")
-      console.log('http://localhost:3000/' + firebase.auth().currentUser.email + '/logisticsrequest/' +this.logReq_id)
-      axios.put(
-        'http://localhost:3000/' + firebase.auth().currentUser.email + '/logisticsrequest/' +this.logReq_id, 
-        {
-         "desiredPrice": this.price
-        }).then((response)=>{
-          console.log(response)
-          alert("successfully updated")
+
+      //get the user wallet object
+      axios.get('http://localhost:3000/' + firebase.auth().currentUser.email + '/wallet')
+        .then((response) => {
+        var balance = response.data.results[0].balance;
+        // wallet amount < desired price : error
+        if (balance < this.price){
+          alert ("insufficient balance")
           this.$router.push({name: 'buyerDeliveryRequest'})
+        } else { //wallet amout > desired price : proceed with PUT
+          // console.log('http://localhost:3000/' + firebase.auth().currentUser.email + '/logisticsrequest/' +this.logReq_id)
+          axios.put(
+            'http://localhost:3000/' + firebase.auth().currentUser.email + '/logisticsrequest/' +this.logReq_id, 
+            {
+            "desiredPrice": this.price
+            }).then((response)=>{
+              // console.log(response)
+              alert("successfully updated")
+              this.$router.push({name: 'buyerDeliveryRequest'})
+            }
+          ).catch(error => {
+          console.log(error);
+          alert("unknown error")
+          this.$router.push({name: 'buyerDeliveryRequest'})
+        })
         }
-      ).catch(error => {
-      console.log(error);
-      alert("unknown error")
-      this.$router.push({name: 'buyerDeliveryRequest'})
-    })
+      })
+      .catch(error => {
+        console.log(error);
+      })
     }
   },
   mounted(){
