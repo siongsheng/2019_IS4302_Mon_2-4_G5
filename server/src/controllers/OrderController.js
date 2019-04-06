@@ -59,6 +59,43 @@ module.exports = {
 		}
 	},
 
+	async putProduct (req, res) {
+		try {
+			let product = await axios.get(`${req.composerAddress}:${req.port}${req.namespace}Product/${req.body.product_id}`)
+			if (typeof(req.body.name) == 'undefined' || req.body.name == '') {
+				req.body.name = product.data.name
+			}
+			if (typeof(req.body.price) == 'undefined' || req.body.price == '') {
+				req.body.price = product.data.price
+			}
+			if (typeof(req.body.description) == 'undefined' || req.body.description == '') {
+				req.body.description = product.data.description
+			}
+			if (typeof(req.body.stock) == 'undefined' || req.body.stock == '') {
+				req.body.stock = product.data.stock
+			}
+			let result = await axios.put(`${req.composerAddress}:${req.port}${req.namespace}Product/${req.body.product_id}`,
+										{
+											Id: product.data.Id,
+											name: req.body.name,
+											price: req.body.price,
+											description: req.body.description,
+											stock: req.body.stock,
+											seller: product.data.seller
+										})
+
+			res.send({
+				message: 'success',
+				results: result.data
+			})
+		} catch (err) {
+			res.status(err.response.data.error.statusCode).send({
+				error: err.toString(),
+				message: err.response.data.error.message
+			})
+		}
+	},
+
 	async orders (req, res) {
 		try {
 			let result = await axios.get(`${req.composerAddress}:${req.port}${req.namespace}Order`)
@@ -147,17 +184,38 @@ module.exports = {
 		}
 	},
 
-	async offerTx (req, res) {
-		if (typeof(req.body.remark) == 'undefined' || req.body.remark == '') {
-			req.body.remark = 'NIL'
+	async putLogisticsrequest (req, res) {
+		try {
+			let result = await axios.post(`${req.composerAddress}:${req.port}${req.namespace}ChangeDesiredPriceTx`,
+										{
+											logisticsRequest: req.body.logisticsRequest_id,
+											desiredPrice: req.body.desiredPrice,
+										})
+			res.send({
+				message: 'success',
+				results: result.data
+			})
+		} catch (err) {
+			res.status(err.response.data.error.statusCode).send({
+				error: err.toString(),
+				message: err.response.data.error.message
+			})
 		}
+	},
+
+	async offerTx (req, res) {
 		try{
+			if (typeof(req.body.remark) == 'undefined' || req.body.remark == '') {
+				req.body.remark = 'NIL'
+			}
+			let user = await axios.get(`${req.composerAddress}:${req.port}/api/system/ping`)
+			myself = user.data.participant
 			let result = await axios.post(`${req.composerAddress}:${req.port}${req.namespace}OfferTx`,
 										{
 											offerPrice: req.body.offerPrice,
 											created: new Date(),
 											remark: req.body.remark,
-											logistics: req.body.logistics,
+											logistics: myself,
 											logisticsRequest: req.body.logisticsRequest
 										})
 			res.send({
